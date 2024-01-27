@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "126368435801",
+    "firebase_url": "https://certificationproject-3dbf5-default-rtdb.firebaseio.com",
+    "project_id": "certificationproject-3dbf5",
+    "storage_bucket": "certificationproject-3dbf5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126368435801:android:6ef3122cb7c84c03aaab48",
+        "android_client_info": {
+          "package_name": "com.example.turisticappamov"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126368435801-no4e37ckl1ts3cl76cughnb9g4jeetvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5wqWW-yilERfEzkCQE74M0YtYnGYjRLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126368435801-no4e37ckl1ts3cl76cughnb9g4jeetvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126368435801:android:c6cf2b7c11484f43aaab48",
+        "android_client_info": {
+          "package_name": "com.jaffar.servicenow_cis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126368435801-no4e37ckl1ts3cl76cughnb9g4jeetvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5wqWW-yilERfEzkCQE74M0YtYnGYjRLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126368435801-no4e37ckl1ts3cl76cughnb9g4jeetvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
