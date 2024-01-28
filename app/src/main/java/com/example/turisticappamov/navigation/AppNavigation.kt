@@ -31,8 +31,6 @@ import com.example.turisticappamov.screens.SettingsScreen
 @Composable
 fun AppNavigation(user: User, intent: Intent, content:Context){
     val navController:NavHostController = rememberNavController()
-    val startColor = Color(0xFF44617E)
-    val endColor = Color(0xFF373D37)
 
 
     Scaffold(

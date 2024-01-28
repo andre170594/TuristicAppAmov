@@ -22,10 +22,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -44,9 +48,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -118,7 +124,15 @@ class MainActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor)))
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            startColor,
+                            endColor,
+                            transparency
+                        )
+                    )
+                )
                 .padding(24.dp)
             ,verticalArrangement = Arrangement.Center
             , horizontalAlignment = Alignment.CenterHorizontally
@@ -155,7 +169,11 @@ class MainActivity : ComponentActivity() {
                     .padding(12.dp, 8.dp),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = transparency
-                )
+                ),leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,contentDescription = "create image"
+                    )
+                }
             )
             TextField(
                 value = password,
@@ -165,7 +183,11 @@ class MainActivity : ComponentActivity() {
                     .padding(12.dp, 8.dp),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = transparency
-                ),
+                ),leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,contentDescription = "password image"
+                    )
+                },
                 textStyle = TextStyle(color = Color.LightGray),
                 label = { Text(text = "Define Password", color = Color.DarkGray, fontFamily = FontFamily.Monospace) },
                 visualTransformation = PasswordVisualTransformation()
@@ -265,16 +287,23 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun PrimeiraTela() {
-        val transparency = Color(0x83BFD3BF)
-        val startColor = Color(0xFF30353A)
-        val endColor = Color(0xFF738073)
+        val transparency = Color(0x5198959E)
+        val startColor = Color(0xFF585069)
+        val endColor = Color(0xFF1F1A2B)
+
         var userName by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
 
       Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor)))
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(startColor, endColor),
+                        start = Offset.Zero,
+                        tileMode = TileMode.Repeated
+                    )
+                )
                 .padding(24.dp)
             ,verticalArrangement = Arrangement.Center
             , horizontalAlignment = Alignment.CenterHorizontally
@@ -297,10 +326,17 @@ class MainActivity : ComponentActivity() {
           )
 
           Text(
+              text = "LOGIN",
+              modifier = Modifier
+                  .padding(bottom = 10.dp, top = 20.dp),
+              fontSize = 24.sp,
+              fontFamily = FontFamily.Monospace
+          )
+          Text(
               text = "Hi lets jump in!",
               modifier = Modifier
                   .padding(bottom = 80.dp, top = 20.dp),
-              fontSize = 24.sp,
+              fontSize = 20.sp,
               fontFamily = FontFamily.Monospace
           )
 
@@ -308,13 +344,18 @@ class MainActivity : ComponentActivity() {
               value = userName,
               onValueChange = { userName = it },
               textStyle = TextStyle(color = Color.DarkGray),
-              label = { Text(text = "Username", color = Color.DarkGray, fontFamily = FontFamily.Monospace) },
+              label = { Text(text = "Username", color = Color.White, fontFamily = FontFamily.Monospace) },
               modifier = Modifier
                   .fillMaxWidth()
                   .padding(12.dp, 8.dp),
               colors = TextFieldDefaults.textFieldColors(
                   containerColor = transparency
-              )
+              ), leadingIcon = {
+                  // Add your icon here
+                  Icon(
+                      imageVector = Icons.Default.Person,contentDescription = "login"
+                  )
+              }
           )
           TextField(
               value = password,
@@ -323,12 +364,17 @@ class MainActivity : ComponentActivity() {
                   .fillMaxWidth()
                   .background(Color.Transparent)
                   .padding(12.dp, 8.dp),
-              textStyle = TextStyle(color = Color.DarkGray),
-              label = { Text(text = "Password", color = Color.DarkGray, fontFamily = FontFamily.Monospace) },
+              textStyle = TextStyle(color = Color.White),
+              label = { Text(text = "Password", color = Color.White, fontFamily = FontFamily.Monospace) },
               visualTransformation = PasswordVisualTransformation(),
               colors = TextFieldDefaults.textFieldColors(
                   containerColor = transparency
-              )
+              ),
+              leadingIcon = {
+                  Icon(
+                      imageVector = Icons.Default.Lock,contentDescription = "password image"
+                  )
+              }
           )
           Button(onClick = { loginDo(userName,password) },
               modifier = Modifier
@@ -424,7 +470,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun PrimeiraTelaPreview() {
 
-        val tela = 0
+        val tela = 1
 
         if(tela == 0)
           PrimeiraTela()
