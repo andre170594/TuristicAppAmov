@@ -343,7 +343,7 @@ class MainActivity : ComponentActivity() {
           TextField(
               value = userName,
               onValueChange = { userName = it },
-              textStyle = TextStyle(color = Color.DarkGray),
+              textStyle = TextStyle(color = Color.White),
               label = { Text(text = "Username", color = Color.White, fontFamily = FontFamily.Monospace) },
               modifier = Modifier
                   .fillMaxWidth()
@@ -380,7 +380,7 @@ class MainActivity : ComponentActivity() {
               modifier = Modifier
                   .padding(vertical = 10.dp, horizontal = 20.dp)
                   .clipToBounds(),
-              colors = ButtonDefaults.buttonColors(Color.DarkGray),
+              colors = ButtonDefaults.buttonColors(transparency),
               shape = RoundedCornerShape(100.dp),
           ) {
               Text(
@@ -402,7 +402,7 @@ class MainActivity : ComponentActivity() {
               ) {
               Text(
                   text = "Create new account?",
-                  color = Color.DarkGray,
+                  color = transparency,
                   textAlign = TextAlign.Center,
                   fontSize = 14.sp, fontFamily = FontFamily.Monospace,
                   textDecoration = TextDecoration.Underline
@@ -470,7 +470,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun PrimeiraTelaPreview() {
 
-        val tela = 1
+        val tela = 0
 
         if(tela == 0)
           PrimeiraTela()

@@ -39,7 +39,7 @@ fun MyQuestion(listaQuestions: ArrayList<Question>, prog: Int) {
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth().background(Color(0xFF698097), RoundedCornerShape(16.dp)),
+                .fillMaxWidth().background(Color(0xDDFFFFFF), RoundedCornerShape(16.dp)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
 
@@ -48,10 +48,10 @@ fun MyQuestion(listaQuestions: ArrayList<Question>, prog: Int) {
                 listaQuestions[prog].pergunta?.let {
                     Text(
                         text = it, // Replace with the actual question text
-                        modifier = Modifier.padding(30.dp),
+                        modifier = Modifier.padding(20.dp),
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
+                        fontSize = 16.sp,
                         fontStyle = FontStyle(1),
                         fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center
                     )

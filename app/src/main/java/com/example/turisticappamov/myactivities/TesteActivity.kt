@@ -1,6 +1,7 @@
 package com.example.turisticappamov.myactivities
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -190,14 +192,15 @@ fun TestLayout(
     onForward: () -> Unit,context: Context
 ) {
 
-    val startColor = Color(0xFF44617E)
-    val endColor = Color(0xFF373D37)
+    val startColor = Color(0xFF1F1A2B)
+    val endColor = Color(0xFF1F1A2B)
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor)))
+            .padding(8.dp)
     ) {
         Column {
             ProgressBarNavigation(
@@ -282,4 +285,46 @@ fun areAllOptionsCorrect(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
         return true
     }
     return false
+}
+
+
+
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(device = "spec:parent=pixel_5")
+@Composable
+fun PrimeiraTelaPreview() {
+
+
+    val opts1 = ParOptionsAnswers("test_opts1", answers = true, selected = true)
+    val opts2 = ParOptionsAnswers("test_opts12", answers = true, selected = false)
+    val opts3 = ParOptionsAnswers("test_opts13", answers = true, selected = false)
+    val opts4 = ParOptionsAnswers("test_opts14", answers = true, selected = false)
+
+    val listOpts = ArrayList<ParOptionsAnswers>()
+    listOpts.add(opts1)
+    listOpts.add(opts2)
+    listOpts.add(opts3)
+    listOpts.add(opts4)
+
+    val quest = Question("Teste corpo da pergunta.. bla bla bla ", listOpt = listOpts,"explain",1)
+    val listaQuests = ArrayList<Question>()
+    listaQuests.add(quest)
+    listaQuests.add(quest)
+
+    val us = User("Jaffar","pwd")
+    val SLC = mutableIntStateOf(1)
+
+  TestLayout(
+      listaQuestions = listaQuests,
+      activeUser = us ,
+      prog = 0,
+      numTotal = 0,
+      globalSelectedCount = 0,
+      onGlobalSelectedCountChange = SLC.component2(),
+      onBack = { /*TODO*/ },
+      onForward = { /*TODO*/ },
+      context = LocalContext.current
+  )
+
 }

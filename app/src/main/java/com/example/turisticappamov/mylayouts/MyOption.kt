@@ -14,9 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.mymodels.ParOptionsAnswers
+
 
 
 @Composable
@@ -26,10 +28,15 @@ fun MyOption(
     globalSelectedCount: Int,
     onGlobalSelectedCountChange: (Int) -> Unit
 ) {
+
+
+    val colorSelected = Color(0xE9563B5C)
+    val colorNotSelected = Color(0xEBA699AF)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(12.dp)
     ) {
         Button(
             onClick = {
@@ -47,19 +54,19 @@ fun MyOption(
                 .fillMaxWidth()
                 .clipToBounds(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (opt.selected== true) Color(0xFF443B5C) else Color(0xFFD5DBE2),
-                contentColor = if (opt.selected== true) Color(0xFFD5DBE2) else Color(0xFF443B5C)
+                containerColor = if (opt.selected== true) colorSelected else colorNotSelected,
+                contentColor = if (opt.selected== true) colorNotSelected else colorSelected
             ),
             shape = RoundedCornerShape(16.dp),
         ) {
             Text(
                 text = opt.option.toString(),
-                color = if (opt.selected== true) Color(0xFFD5DBE2) else Color(0xFF443B5C),
+                color = if (opt.selected== true) Color.White else Color.Black,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                    .padding(horizontal = 10.dp, vertical = 10.dp),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold
 
@@ -67,4 +74,10 @@ fun MyOption(
         }
     }
 }
+@Preview
+@Composable
+fun Tested() {
 
+    val par = ParOptionsAnswers("isto é uma resposta",false,false)
+    MyOption(par,1,1,{})
+}

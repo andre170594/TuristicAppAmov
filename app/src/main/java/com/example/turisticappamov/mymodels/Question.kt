@@ -1,6 +1,5 @@
 package com.example.turisticappamov.mymodels
 
-import com.example.turisticappamov.mymodels.ParOptionsAnswers
 import java.io.Serializable
 
 class Question(

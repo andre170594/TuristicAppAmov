@@ -40,8 +40,8 @@ import com.example.turisticappamov.mymodels.User
 
 @Composable
 fun HomeScreen(user: User, intent: Intent, content: Context) {
-    val startColor = Color(0xFF44617E)
-    val endColor = Color(0xFF373D37)
+    val startColor = Color(0xFF585069)
+    val endColor = Color(0xFF1F1A2B)
 
 
     Column(
@@ -62,7 +62,7 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                 .fillMaxWidth()
         )
         Text(
-            text = "CSA",
+            text = "Devs on Tour",
             modifier = Modifier.padding(bottom = 10.dp, top = 20.dp), fontFamily = FontFamily.Monospace
         )
         Text(
@@ -143,78 +143,7 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                 }
             }
         }
-        // 1Row
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Box( // LAST SCORE WIDGET
-                modifier = Modifier
-                    .size(150.dp)
-                    .background(color = Color.Gray, shape = RoundedCornerShape(16.dp))
-                    .padding(8.dp)
-            ) {
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
-                    Text(
-                        text = "Last Score",
-                        color = Color.LightGray,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                            .padding(bottom = 6.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp
-                    )
-                    RoundProgressBar(
-                        percentage = getUserLastScore(user),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(8.dp)
-                    )
-                }
-
-
-
-            }
-
-            Box( // AVG SCORE WIDGET
-                modifier = Modifier
-                    .size(150.dp)
-                    .background(color = Color.Gray, shape = RoundedCornerShape(16.dp))
-                    .padding(8.dp)
-            ) {
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
-                    Text(
-                        text = "AVG Score",
-                        color = Color.LightGray,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                            .padding(bottom = 6.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp
-                    )
-                    RoundProgressBar(
-                        percentage = getAvgScore(user),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(8.dp)
-                    )
-                }
-            }
-        }
 
         Button(
             onClick = { startTest("teste01", user, intent, content) },

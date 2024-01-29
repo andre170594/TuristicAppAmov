@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.navigation.AppNavigation
+
 import com.example.turisticappamov.ui.theme.TuristicAppAmovTheme
 
 
@@ -41,3 +43,10 @@ class MenuActivity : ComponentActivity() {
     }
 }
 
+@Preview
+@Composable
+fun Test(){
+    val user = User("Bulbassaur","pwd",89.5,null)
+
+    AppNavigation(user, Intent(), LocalContext.current)
+}
