@@ -29,7 +29,7 @@ class MenuActivity : ComponentActivity() {
 
         setContent {
             TuristicAppAmovTheme {
-                AppNavigation(activeUser,intent,content)
+                AppNavigation(activeUser,null,intent,content)
             }
         }
     }
@@ -48,5 +48,5 @@ class MenuActivity : ComponentActivity() {
 fun Test(){
     val user = User("Bulbassaur","pwd",89.5,null)
 
-    AppNavigation(user, Intent(), LocalContext.current)
+    AppNavigation(user,null, Intent(), LocalContext.current)
 }

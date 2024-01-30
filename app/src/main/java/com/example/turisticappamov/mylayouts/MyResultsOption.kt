@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.mymodels.ParOptionsAnswers
@@ -23,6 +24,10 @@ fun MyResultsOption(opt: ParOptionsAnswers) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+
+        val colorSelected = Color(0xE9563B5C)
+        val colorNotSelected = Color(0xEBA699AF)
+
         Button(
             onClick = {
 
@@ -35,8 +40,8 @@ fun MyResultsOption(opt: ParOptionsAnswers) {
                     shape = RoundedCornerShape(16.dp)
                 ),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (opt.selected == true) Color.DarkGray else Color.White,
-                contentColor = if (opt.selected == true) Color.White else Color.DarkGray
+                containerColor = if (opt.selected == true) colorSelected else colorNotSelected,
+                contentColor = if (opt.selected == true) colorNotSelected else colorSelected
             ),
             shape = RoundedCornerShape(16.dp),
         ) {
@@ -59,4 +64,13 @@ fun findContainerColor(opt: ParOptionsAnswers): Color {
     } else {
         Color.Red
     }
+}
+
+
+@Preview
+@Composable
+fun Testeded() {
+
+    val par = ParOptionsAnswers("isto é uma resposta",true,true)
+    MyResultsOption(par)
 }
