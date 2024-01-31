@@ -77,10 +77,7 @@ class TesteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         goFullScreen()
-        initGame { fetchedQuestions ->
-            println("Fetched questions size: ${fetchedQuestions.size}")
-            println("First question: ${fetchedQuestions.getOrNull(0)?.pergunta}")
-
+        initGame {
             setContent {
                 TuristicAppAmovTheme {
                     Surface(

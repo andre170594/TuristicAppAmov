@@ -445,7 +445,6 @@ class MainActivity : ComponentActivity() {
                         if (user != null && user.password == password) {
                             userExists = true
                             activeUser = User(user.username,user.password,user.lastScore,user.getAvgScoresList())
-                            println("AKBAR LASTLog: User(${activeUser.username} ${activeUser.password} ${activeUser.lastScore} size: ${activeUser.getAvgScoresList()!!.size})")
                             break
                         }
                     }

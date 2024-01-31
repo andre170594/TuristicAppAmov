@@ -2,10 +2,10 @@ package com.example.turisticappamov.mymodels
 
 import java.io.Serializable
 
-class FeedItem( val title: String,
-                val content: String,
-                val timestamp: Long,
-                val nameUser: String
+class FeedItem( val title: String? = null,
+                val content: String?= null,
+                val timestamp: Long?= null,
+                val nameUser: String?= null
                 ):Serializable
 {
 

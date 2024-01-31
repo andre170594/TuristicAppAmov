@@ -51,11 +51,7 @@ fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
             if(listFeedItems!=null) {
                 itemsIndexed(listFeedItems) { index, feedIt ->
                     // Wrong Question
-                    Divider(
-                        color = Color.Gray,
-                        thickness = 1.dp,
-                        modifier = Modifier.fillMaxWidth().padding(top = 10.dp)
-                    )
+
                     MyFeedItem(feedIt)
                     Divider(
                         color = Color.Gray,
