@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 
 @Composable
 fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
@@ -52,7 +53,7 @@ fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
         }
 
         Text(
-            text = "${percentage}%",
+            text = "${percentage.roundToInt()}%",
             color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp

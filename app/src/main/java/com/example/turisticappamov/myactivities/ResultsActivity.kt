@@ -49,6 +49,7 @@ import kotlin.math.roundToLong
 class ResultsActivity : ComponentActivity() {
 
     private var numCertas:Int = 10
+    private var numTotal:Int = 10
     private lateinit var listaErradas: ArrayList<Question>
     private lateinit var activeUser: User
 
@@ -57,6 +58,7 @@ class ResultsActivity : ComponentActivity() {
         goFullScreen()
 
         numCertas = intent.getIntExtra("NUM_CERTAS",0)
+        numTotal = intent.getIntExtra("TOTALQ",0)
         listaErradas = intent.getSerializableExtra("WRONG_QUESTIONS") as ArrayList<Question>
         activeUser= (intent.getSerializableExtra("USER") as? User)!!
 
@@ -77,7 +79,7 @@ class ResultsActivity : ComponentActivity() {
                             listaErradas,
                             activeUser,
                             startColor,
-                            endColor
+                            endColor,numTotal
                         )
                     }
                 }
@@ -102,7 +104,8 @@ fun ResultsLayout(
     listaErradas: ArrayList<Question>,
     activeUser: User,
     startColor: Color,
-    endColor: Color
+    endColor: Color,
+    ntotal:Int
 ) {
 
    Box( modifier = Modifier
@@ -120,14 +123,18 @@ fun ResultsLayout(
     ) {
         // Display Round Progress Bar
         RoundProgressBar(
-            percentage = getScorePercentage(numCertas, listaErradas.size).toDouble(),
+            percentage = getScorePercentage(numCertas, ntotal),
             modifier = Modifier
                 .size(150.dp)
                 .padding(8.dp).fillMaxSize()
-
         )
 
-        // put divider here //
+        //  ** DEBUG **
+        println("AKBARINO SCORE: " + getScorePercentage(numCertas, ntotal))
+        println("AKBARINO certas: $numCertas")
+        println("AKBARINO size: $ntotal")
+        //  ** END **
+
 
         // Display List of Wrong Questions
         if (listaErradas.isNotEmpty()) {
@@ -176,8 +183,8 @@ fun ResultsLayout(
 
 
 
-fun getScorePercentage(numCertas: Int, size: Int): String {
-    return ((numCertas.toDouble() / size) * 100).roundToLong().toString()
+fun getScorePercentage(numCertas: Int, size: Int): Double {
+    return ((numCertas / size.toDouble()) * 100)
 }
 
 
@@ -207,7 +214,7 @@ fun Te() {
     val us = User("Jaffar", "pwd")
 
 
-    ResultsLayout(LocalContext.current,1,listaQuests,us,Color(0xFF44617E),Color(0xFF373D37))
+    ResultsLayout(LocalContext.current,1,listaQuests,us,Color(0xFF44617E),Color(0xFF373D37),10)
 
 }
 

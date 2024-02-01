@@ -254,6 +254,7 @@ fun submitAnswers(listaQuestions: ArrayList<Question>, activeUser: User, context
     val intent = Intent(context, ResultsActivity::class.java)
     intent.putExtra("WRONG_QUESTIONS", wrongQuestions)
     intent.putExtra("NUM_CERTAS", numCertas)
+    intent.putExtra("TOTALQ", listaQuestions.size)
     intent.putExtra("USER", activeUser)
     context.startActivity(intent)
 }
