@@ -41,6 +41,8 @@ import com.example.turisticappamov.mymodels.User
 
 @Composable
 fun HomeScreen(user: User, intent: Intent, content: Context) {
+    println("AKBARINO1 HomeScreen")
+
     val startColor = Color(0xFF585069)
     val endColor = Color(0xFF1F1A2B)
 
@@ -175,6 +177,16 @@ fun getUserLastScore(user: User): Double {
 }
 
 fun getAvgScore(user: User): Double {
+  if(!user.getAvgScoresList().isNullOrEmpty()){
+      val lista = user.getAvgScoresList()
+      if (lista != null) {
+          return lista.average()
+      }
+  }else
+      return 0.0
+
+
+
     return if (user.getAvgScoresList()!=null) {
         user.getAvgScoresList()!!.average()
     } else
@@ -189,8 +201,3 @@ fun startTest(selectedOPT: String, user: User, intent: Intent, content:Context) 
 
 }
 
-@Preview
-@Composable
-fun Test(){
-    HomeScreen(user = User("exp"), intent = Intent.getIntentOld("test") , content = LocalContext.current)
-}

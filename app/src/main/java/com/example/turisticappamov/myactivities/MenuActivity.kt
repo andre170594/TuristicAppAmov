@@ -88,7 +88,7 @@ class MenuActivity : ComponentActivity() {
 @Preview
 @Composable
 fun Test(){
-    val user = User("Bulbassaur","pwd",89.5,null)
+    val user = User("userID","Bulbassaur","pwd",89.5,null)
 
     AppNavigation(user,null, Intent(), LocalContext.current)
 }

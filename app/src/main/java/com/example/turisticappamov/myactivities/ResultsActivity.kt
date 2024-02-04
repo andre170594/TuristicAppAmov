@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -41,9 +42,14 @@ import com.example.turisticappamov.myactivities.ui.theme.TuristicAppAmovTheme
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.MyResultsOption
 import com.example.turisticappamov.mylayouts.RoundProgressBar
+import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.ParOptionsAnswers
 import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
+import com.google.firebase.Firebase
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class ResultsActivity : ComponentActivity() {
@@ -166,6 +172,10 @@ fun ResultsLayout(
         // Button to Go Back
         Button(
             onClick = {
+                // update Scores and Feed
+                updateScores(activeUser, getScorePercentage(numCertas,ntotal))
+                updateFeed("achieved",getScorePercentage(numCertas,ntotal).roundToInt().toString(),System.currentTimeMillis(),activeUser.username)
+
                 val intent = Intent(context, MenuActivity::class.java)
                 intent.putExtra("USER", activeUser)
                 context.startActivity(intent)
@@ -181,6 +191,31 @@ fun ResultsLayout(
    }
 }
 
+fun updateFeed(title: String, content: String, timestamp: Long, nameUser: String?) {
+    val firebaseDatabase = FirebaseDatabase.getInstance()
+    val databaseRef = firebaseDatabase.getReference("feeds")
+    val feedId = databaseRef.push().key
+    val newUFeed = FeedItem(title, content ,timestamp,nameUser)
+    if(feedId != null)
+        databaseRef.child(feedId).setValue(newUFeed)
+}
+
+fun updateScores(activeUser: User, scorePercentage: Double) {
+    if(activeUser.getAvgScoresList() == null){
+        activeUser.avgScores = ArrayList()
+        activeUser.avgScores!!.add(scorePercentage)
+    }else{
+        activeUser.avgScores!!.add(scorePercentage)
+    }
+    activeUser.lastScore = scorePercentage
+    
+    val usersRef = Firebase.database.reference.child("users")
+    val userRef = usersRef.child(activeUser.userID.toString())
+    userRef.child("avgScores").setValue(activeUser.avgScores)
+    userRef.child("lastScore").setValue(activeUser.lastScore)
+
+    println("AKBARINO : AVGSCORE updated")
+}
 
 
 fun getScorePercentage(numCertas: Int, size: Int): Double {
@@ -212,8 +247,6 @@ fun Te() {
     listaQuests.add(quest)
 
     val us = User("Jaffar", "pwd")
-
-
     ResultsLayout(LocalContext.current,1,listaQuests,us,Color(0xFF44617E),Color(0xFF373D37),10)
 
 }

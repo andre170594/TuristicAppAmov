@@ -248,11 +248,10 @@ class MainActivity : ComponentActivity() {
                             // Generate a unique key for the new user
                             val userId = databaseRef.push().key
 
-                            // Create a new user object
-                            val newUser = User(username, password)
-
                             // Check if the userId is not null
                             if (userId != null) {
+                                // Create a new user object
+                                val newUser = User(userId,username, password)
                                 // Insert the new user into the database under the generated userId
                                 databaseRef.child(userId).setValue(newUser)
                                     .addOnSuccessListener {
@@ -421,7 +420,7 @@ class MainActivity : ComponentActivity() {
                 databaseRef
             ) { exists ->
                 if (exists) {
-                    println("Login successfully")
+                    println("AKBARINO Login successfully")
                     val intent = Intent(this@MainActivity, MenuActivity::class.java)
                     intent.putExtra("USER",activeUser)
                     startActivity(intent)
@@ -442,9 +441,14 @@ class MainActivity : ComponentActivity() {
                     var userExists = false
                     for (snapshot in dataSnapshot.children) {
                         val user = snapshot.getValue(User::class.java)
-                        if (user != null && user.password == password) {
+
+                        if (user != null && user.password == password && user.lastScore != null && user.getAvgScoresList() != null) {
                             userExists = true
-                            activeUser = User(user.username,user.password,user.lastScore,user.getAvgScoresList())
+                            activeUser = User(user.userID,user.username,user.password,user.lastScore,user.getAvgScoresList())
+                            break
+                        }else if(user != null && user.password == password){
+                            userExists = true
+                            activeUser = User(user.username,user.password,null,null)
                             break
                         }
                     }

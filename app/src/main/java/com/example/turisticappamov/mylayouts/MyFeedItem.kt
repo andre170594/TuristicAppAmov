@@ -53,7 +53,7 @@ fun MyFeedItem(feedIt: FeedItem) {
 
             // Timestamp on the right
             Text(
-                text = feedIt.timestamp.toString(), // Convert timestamp to string
+                text = feedIt.getFormatedDate().toString(), // Convert timestamp to string
                 color = Color.White,
                 fontSize = 12.sp,
                 fontFamily = FontFamily.Monospace,
