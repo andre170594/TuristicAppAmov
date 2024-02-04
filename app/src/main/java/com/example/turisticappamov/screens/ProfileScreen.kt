@@ -33,6 +33,8 @@ fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
     val endColor = Color(0xFF787380)
 
 
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,6 +51,8 @@ fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
                 .fillMaxWidth()
         ){
             if(listFeedItems!=null) {
+
+                listFeedItems.sortBy { it.timestamp }
                 itemsIndexed(listFeedItems) { index, feedIt ->
                     // Wrong Question
 
