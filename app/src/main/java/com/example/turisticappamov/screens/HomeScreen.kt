@@ -177,19 +177,10 @@ fun getUserLastScore(user: User): Double {
 }
 
 fun getAvgScore(user: User): Double {
-  if(!user.getAvgScoresList().isNullOrEmpty()){
-      val lista = user.getAvgScoresList()
-      if (lista != null) {
-          return lista.average()
-      }
-  }else
-      return 0.0
-
-
-
-    return if (user.getAvgScoresList()!=null) {
-        user.getAvgScoresList()!!.average()
-    } else
+    val lista = user.getAvgScoresList()
+    return if(!lista.isNullOrEmpty()){
+        lista.average()
+    }else
         0.0
 }
 
