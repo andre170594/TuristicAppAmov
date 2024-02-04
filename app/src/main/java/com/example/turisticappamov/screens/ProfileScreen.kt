@@ -75,7 +75,7 @@ fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
 @Composable
 fun T1(){
 
-    val feed = FeedItem("titulo", "conteudo",1234567890L,"Jaffar")
+    val feed = FeedItem("achieved", "70%",1234567890L,"Jaffar")
     val listFeeds = ArrayList<FeedItem>()
     listFeeds.add(feed)
     listFeeds.add(feed)
