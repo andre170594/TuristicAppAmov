@@ -36,7 +36,6 @@ import com.example.turisticappamov.screens.SettingsScreen
 fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent, content:Context){
     val navController:NavHostController = rememberNavController()
 
-
     Scaffold(
         bottomBar = {
             NavigationBar {
