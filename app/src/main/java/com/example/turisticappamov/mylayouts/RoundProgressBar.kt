@@ -18,8 +18,6 @@ import kotlin.math.roundToInt
 
 @Composable
 fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
-
-
     Box(
         modifier = modifier
             .aspectRatio(1f)
@@ -32,7 +30,6 @@ fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
         ) {
             val outerRadius = size.minDimension / 2
             val strokeWidth = 20f
-
             // Draw the background circle
             drawArc(
                 color = Color.Gray,
@@ -41,7 +38,6 @@ fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
                 useCenter = false,
                 style = Stroke(strokeWidth)
             )
-
             // Draw the progress arc
             drawArc(
                 color = if (percentage >= 70) Color.Green else Color.Blue,
@@ -51,7 +47,6 @@ fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
                 style = Stroke(strokeWidth)
             )
         }
-
         Text(
             text = "${percentage.roundToInt()}%",
             color = Color.Black,

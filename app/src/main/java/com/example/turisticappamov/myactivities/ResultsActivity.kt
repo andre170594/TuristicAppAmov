@@ -1,18 +1,14 @@
 package com.example.turisticappamov.myactivities
-import android.annotation.SuppressLint
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-
 import androidx.compose.foundation.layout.Column
-
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,23 +18,17 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
-
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-
 import androidx.compose.ui.unit.dp
-
 import com.example.turisticappamov.myactivities.ui.theme.TuristicAppAmovTheme
-
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.MyResultsOption
 import com.example.turisticappamov.mylayouts.RoundProgressBar
@@ -50,7 +40,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
+
 
 class ResultsActivity : ComponentActivity() {
 
@@ -74,7 +64,6 @@ class ResultsActivity : ComponentActivity() {
 
         setContent {
             TuristicAppAmovTheme {
-                // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
@@ -127,7 +116,6 @@ fun ResultsLayout(
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        // Display Round Progress Bar
         RoundProgressBar(
             percentage = getScorePercentage(numCertas, ntotal),
             modifier = Modifier
@@ -140,7 +128,6 @@ fun ResultsLayout(
         println("AKBARINO certas: $numCertas")
         println("AKBARINO size: $ntotal")
         //  ** END **
-
 
         // Display List of Wrong Questions
         if (listaErradas.isNotEmpty()) {
@@ -159,7 +146,6 @@ fun ResultsLayout(
                     question.listOpt?.forEach {
                         MyResultsOption(opt = it)
                     }
-
                 }
             }
         } else {
@@ -175,7 +161,7 @@ fun ResultsLayout(
                 // update Scores and Feed
                 updateScores(activeUser, getScorePercentage(numCertas,ntotal))
                 updateFeed("achieved",getScorePercentage(numCertas,ntotal).roundToInt().toString(),System.currentTimeMillis(),activeUser.username)
-
+                // launch previous activity
                 val intent = Intent(context, MenuActivity::class.java)
                 intent.putExtra("USER", activeUser)
                 context.startActivity(intent)
@@ -213,17 +199,12 @@ fun updateScores(activeUser: User, scorePercentage: Double) {
     val userRef = usersRef.child(activeUser.userID.toString())
     userRef.child("avgScores").setValue(activeUser.avgScores)
     userRef.child("lastScore").setValue(activeUser.lastScore)
-
-    println("AKBARINO : AVGSCORE updated")
 }
 
 
 fun getScorePercentage(numCertas: Int, size: Int): Double {
     return ((numCertas / size.toDouble()) * 100)
 }
-
-
-
 
 @Preview
 @Composable

@@ -22,8 +22,6 @@ import com.example.turisticappamov.mymodels.FeedItem
 
 @Composable
 fun MyFeedItem(feedIt: FeedItem) {
-   
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +48,6 @@ fun MyFeedItem(feedIt: FeedItem) {
                 fontFamily = FontFamily.Monospace,
                 textAlign = TextAlign.Center,
             )
-
             // Timestamp on the right
             Text(
                 text = feedIt.getFormatedDate().toString(), // Convert timestamp to string
@@ -64,12 +61,9 @@ fun MyFeedItem(feedIt: FeedItem) {
     }
 }
 
-
-
 @Preview
 @Composable
 fun TestItem(){
-
     val feed = FeedItem("Acheived", "70%",1234567890L,"Jaffar")
     MyFeedItem(feedIt = feed)
     

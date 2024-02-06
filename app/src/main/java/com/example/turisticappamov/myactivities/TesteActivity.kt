@@ -2,23 +2,16 @@ package com.example.turisticappamov.myactivities
 
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.example.turisticappamov.mylayouts.MyOption
 import android.os.Bundle
 import android.view.WindowManager
-
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-
 import androidx.compose.foundation.layout.Box
-
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,17 +19,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
-
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
@@ -46,19 +35,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 import androidx.lifecycle.lifecycleScope
 import com.example.turisticappamov.mymodels.ParOptionsAnswers
 import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
-
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.ProgressBarNavigation
 import com.example.turisticappamov.ui.theme.TuristicAppAmovTheme
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.GenericTypeIndicator
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -238,9 +224,6 @@ fun TestLayout(
                     )
                 }
             }
-
-
-
         }
     }
 }
@@ -249,8 +232,6 @@ fun submitAnswers(listaQuestions: ArrayList<Question>, activeUser: User, context
     val wrongQuestions = getWrongQuestions(listaQuestions)
     val numCertas = listaQuestions.size - wrongQuestions.size
 
-
-    // launch ResultsActivity (wrongQuestions,numCertas,activeUser)
     val intent = Intent(context, ResultsActivity::class.java)
     intent.putExtra("WRONG_QUESTIONS", wrongQuestions)
     intent.putExtra("NUM_CERTAS", numCertas)
@@ -267,7 +248,6 @@ fun getWrongQuestions(listaQuestions: ArrayList<Question>): ArrayList<Question> 
             wrongQuestions.add(question)
         }
     }
-
     return wrongQuestions
 }
 fun areAllOptionsCorrect(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
@@ -284,8 +264,6 @@ fun areAllOptionsCorrect(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
     }
     return false
 }
-
-
 
 
 @SuppressLint("UnrememberedMutableState")

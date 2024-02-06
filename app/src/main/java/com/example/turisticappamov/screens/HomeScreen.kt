@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,16 +23,13 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import com.example.turisticappamov.R
-
 import com.example.turisticappamov.mylayouts.RoundProgressBar
 import com.example.turisticappamov.mymodels.User
 
@@ -41,11 +37,8 @@ import com.example.turisticappamov.mymodels.User
 
 @Composable
 fun HomeScreen(user: User, intent: Intent, content: Context) {
-    println("AKBARINO1 HomeScreen")
-
     val startColor = Color(0xFF585069)
     val endColor = Color(0xFF1F1A2B)
-
 
     Column(
         modifier = Modifier
@@ -73,7 +66,6 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
             modifier = Modifier.padding(bottom = 40.dp, top = 10.dp),
             fontSize = 24.sp, fontFamily = FontFamily.Monospace
         )
-
         // 1Row
         Row(
             modifier = Modifier
@@ -87,7 +79,6 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                     .background(color = Color.Gray, shape = RoundedCornerShape(16.dp))
                     .padding(8.dp)
             ) {
-
               Column(
                   modifier = Modifier
                       .fillMaxSize()
@@ -114,7 +105,6 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
 
 
             }
-
             Box( // AVG SCORE WIDGET
                 modifier = Modifier
                     .size(150.dp)
@@ -146,8 +136,6 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                 }
             }
         }
-
-
         Button(
             onClick = { startTest("teste01", user, intent, content) },
             modifier = Modifier
@@ -168,14 +156,12 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
         }
     }
 }
-
 fun getUserLastScore(user: User): Double {
     return if (user.lastScore!=null){
         user.lastScore!!
     } else
         0.0
 }
-
 fun getAvgScore(user: User): Double {
     val lista = user.getAvgScoresList()
     return if(!lista.isNullOrEmpty()){
@@ -183,7 +169,6 @@ fun getAvgScore(user: User): Double {
     }else
         0.0
 }
-
 fun startTest(selectedOPT: String, user: User, intent: Intent, content:Context) {
     intent.putExtra("USER",user)
     intent.putExtra("TEST",selectedOPT)

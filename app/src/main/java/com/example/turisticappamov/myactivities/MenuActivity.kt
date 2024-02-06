@@ -6,20 +6,17 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.example.turisticappamov.mymodels.FeedItem
-import com.example.turisticappamov.mymodels.ParOptionsAnswers
-import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.navigation.AppNavigation
-
 import com.example.turisticappamov.ui.theme.TuristicAppAmovTheme
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.GenericTypeIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -32,6 +29,12 @@ class MenuActivity : ComponentActivity() {
     private lateinit var liveFeed: ArrayList<FeedItem>
     private lateinit var database: FirebaseDatabase
     private lateinit var feedsRef: DatabaseReference
+
+    private var optNightMode = mutableStateOf(false)
+    private var optNotificationsOn = mutableStateOf(true)
+    private var optShowFeed = mutableStateOf(true)
+    private lateinit var listaSettingsOpts: ArrayList<MutableState<Boolean>>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +72,18 @@ class MenuActivity : ComponentActivity() {
                 println("Failed to retrieve feed: ${e.message}")
             }
 
+            // track options in settings screen
+            listaSettingsOpts = ArrayList()
+            listaSettingsOpts.add(optNightMode)
+            listaSettingsOpts.add(optNotificationsOn)
+            listaSettingsOpts.add(optShowFeed)
+
             setContent {
                 TuristicAppAmovTheme {
-                    AppNavigation(activeUser, liveFeed, intent, content)
+                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts)
                 }
             }
         }
-
     }
     private fun goFullScreen() {
         window.setFlags(
@@ -89,6 +97,6 @@ class MenuActivity : ComponentActivity() {
 @Composable
 fun Test(){
     val user = User("userID","Bulbassaur","pwd",89.5,null)
-
-    AppNavigation(user,null, Intent(), LocalContext.current)
+    var lista = ArrayList<MutableState<Boolean>>()
+    AppNavigation(user,null, Intent(), LocalContext.current,lista)
 }

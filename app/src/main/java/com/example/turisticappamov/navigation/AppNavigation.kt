@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -33,7 +34,7 @@ import com.example.turisticappamov.screens.SettingsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent, content:Context){
+fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent, content:Context,listaSettings: ArrayList<MutableState<Boolean>>){
     val navController:NavHostController = rememberNavController()
 
     Scaffold(
@@ -82,7 +83,7 @@ fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent,
                 ProfileScreen(listFeedItems)
             }
             composable(route = Screens.SettingsScreen.name){
-                SettingsScreen()
+                SettingsScreen(user,listaSettings)
             }
         }
     }

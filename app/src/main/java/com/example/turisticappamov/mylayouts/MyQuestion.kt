@@ -1,6 +1,5 @@
 package com.example.turisticappamov.mylayouts
 
-import android.content.res.Resources.Theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -47,7 +45,7 @@ fun MyQuestion(listaQuestions: ArrayList<Question>, prog: Int) {
             if (listaQuestions.isNotEmpty()) {
                 listaQuestions[prog].pergunta?.let {
                     Text(
-                        text = it, // Replace with the actual question text
+                        text = it,
                         modifier = Modifier.padding(20.dp),
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -58,7 +56,7 @@ fun MyQuestion(listaQuestions: ArrayList<Question>, prog: Int) {
                 }
             } else {
                 Text(
-                    text = "failed: ${listaQuestions.size}", // Replace with the actual question text
+                    text = "failed: ${listaQuestions.size}",
                     modifier = Modifier.padding(30.dp),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
