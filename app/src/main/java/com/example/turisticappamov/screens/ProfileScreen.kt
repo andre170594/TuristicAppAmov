@@ -4,14 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -24,13 +27,20 @@ import com.example.turisticappamov.mylayouts.MyFeedItem
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.MyResultsOption
 import com.example.turisticappamov.mymodels.FeedItem
+import com.example.turisticappamov.mymodels.User
 import java.sql.Timestamp
 import java.time.Instant
 
 @Composable
-fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
-    val startColor = Color(0xFF3A3034)
-    val endColor = Color(0xFF787380)
+fun ProfileScreen(user:User,listFeedItems: ArrayList<FeedItem>?,listaSettings: ArrayList<MutableState<Boolean>>){
+
+    // DARK MODE
+    var startColor = Color(0xFFCBD5A5)
+    var endColor = Color(0xFFF3E9D4)
+    if(user.goDark == true){
+        startColor = Color(0xFF111644)
+        endColor = Color(0xFF321B4F)
+    }
 
 
 
@@ -43,6 +53,17 @@ fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
+        Spacer(modifier = Modifier.height(35.dp))
+
+        Text(
+            text = "Feed",
+            fontFamily = FontFamily.Serif,
+            fontSize = 24.sp,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.height(66.dp))
 
         LazyColumn(
             modifier = Modifier
@@ -68,18 +89,4 @@ fun ProfileScreen(listFeedItems: ArrayList<FeedItem>?){
 
     }
 
-}
-
-
-@Preview
-@Composable
-fun T1(){
-
-    val feed = FeedItem("achieved", "70%",1234567890L,"Jaffar")
-    val listFeeds = ArrayList<FeedItem>()
-    listFeeds.add(feed)
-    listFeeds.add(feed)
-    listFeeds.add(feed)
-    listFeeds.add(feed)
-    ProfileScreen(listFeeds)
 }

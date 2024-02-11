@@ -1,7 +1,6 @@
 package com.example.turisticappamov.myactivities
 
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import com.example.turisticappamov.mylayouts.MyOption
@@ -32,7 +31,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
@@ -63,6 +61,10 @@ class TesteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         goFullScreen()
+
+        val goDark = intent.getBooleanExtra("GoDARK",false)
+
+
         initGame {
             setContent {
                 TuristicAppAmovTheme {
@@ -78,7 +80,8 @@ class TesteActivity : ComponentActivity() {
                             globalSelectedCount,
                             onGlobalSelectedCountChange = { newCount -> globalSelectedCount = newCount},
                             onBack = { goBack() },
-                            onForward = { goForward() }, LocalContext.current
+                            onForward = { goForward() }, LocalContext.current,
+                            goDark
 
                         )
                     }
@@ -172,11 +175,25 @@ fun TestLayout(
     globalSelectedCount: Int,
     onGlobalSelectedCountChange: (Int) -> Unit,
     onBack: () -> Unit,
-    onForward: () -> Unit,context: Context
+    onForward: () -> Unit, context: Context,
+    goDark: Boolean
 ) {
 
-    val startColor = Color(0xFF1F1A2B)
-    val endColor = Color(0xFF1F1A2B)
+    // DARK MODE
+    var startColor = Color(0xFFCBD5A5)
+    var endColor = Color(0xFFF3E9D4)
+    var textColor = Color(0xFF617C63)
+    var widgetBackColor = Color(0xFFFEFAE8)
+    var btnColor = Color(0xFF4E6C50)
+    var btnTextColor = Color(0xFFDCE6DC)
+    if(goDark){
+        startColor = Color(0xFF111644)
+        endColor = Color(0xFF321B4F)
+        textColor = Color(0xFF9FA8DA)
+        widgetBackColor = Color(0xFF45256D)
+        btnColor = Color(0xFFC87ABE)
+        btnTextColor = Color(0xFFD7D0DB)
+    }
 
     Box(
         modifier = Modifier
@@ -190,7 +207,7 @@ fun TestLayout(
                 current = prog,
                 total = numTotal,
                 onBack = {  onBack() },
-                onForward = { onForward() }
+                onForward = { onForward() },btnTextColor,btnColor
             )
             MyQuestion(listaQuestions, prog)
             // Display options
@@ -210,7 +227,7 @@ fun TestLayout(
                     modifier = Modifier
                         .padding(vertical = 10.dp, horizontal = 20.dp)
                         .clipToBounds(),
-                    colors = ButtonDefaults.buttonColors(Color.DarkGray),
+                    colors = ButtonDefaults.buttonColors(btnColor),
                     shape = RoundedCornerShape(100.dp),
                 ) {
                     Text(
@@ -266,41 +283,3 @@ fun areAllOptionsCorrect(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
 }
 
 
-@SuppressLint("UnrememberedMutableState")
-@Preview(device = "spec:parent=pixel_5")
-@Composable
-fun PrimeiraTelaPreview() {
-
-
-    val opts1 = ParOptionsAnswers("test_opts1", answers = true, selected = true)
-    val opts2 = ParOptionsAnswers("test_opts12", answers = true, selected = false)
-    val opts3 = ParOptionsAnswers("test_opts13", answers = true, selected = false)
-    val opts4 = ParOptionsAnswers("test_opts14", answers = true, selected = false)
-
-    val listOpts = ArrayList<ParOptionsAnswers>()
-    listOpts.add(opts1)
-    listOpts.add(opts2)
-    listOpts.add(opts3)
-    listOpts.add(opts4)
-
-    val quest = Question("Teste corpo da pergunta.. bla bla bla ", listOpt = listOpts,"explain",1)
-    val listaQuests = ArrayList<Question>()
-    listaQuests.add(quest)
-    listaQuests.add(quest)
-
-    val us = User("Jaffar","pwd")
-    val SLC = mutableIntStateOf(1)
-
-  TestLayout(
-      listaQuestions = listaQuests,
-      activeUser = us ,
-      prog = 0,
-      numTotal = 0,
-      globalSelectedCount = 0,
-      onGlobalSelectedCountChange = SLC.component2(),
-      onBack = { /*TODO*/ },
-      onForward = { /*TODO*/ },
-      context = LocalContext.current
-  )
-
-}

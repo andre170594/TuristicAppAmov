@@ -231,7 +231,7 @@ class MainActivity : ComponentActivity() {
                             // Check if the userId is not null
                             if (userId != null) {
                                 // Create a new user object
-                                val newUser = User(userId,username, password)
+                                val newUser = User(userId,username, password,null,null,false)
                                 // Insert the new user into the database under the generated userId
                                 databaseRef.child(userId).setValue(newUser)
                                     .addOnSuccessListener {
@@ -419,13 +419,13 @@ class MainActivity : ComponentActivity() {
                     for (snapshot in dataSnapshot.children) {
                         val user = snapshot.getValue(User::class.java)
 
-                        if (user != null && user.password == password && user.lastScore != null && user.getAvgScoresList() != null) {
+                        if (user != null && user.password == password && user.lastScore != null && user.getAvgScoresList() != null && user.goDark != null) {
                             userExists = true
-                            activeUser = User(user.userID,user.username,user.password,user.lastScore,user.getAvgScoresList())
+                            activeUser = User(user.userID,user.username,user.password,user.lastScore,user.getAvgScoresList(),user.goDark)
                             break
                         }else if(user != null && user.password == password){
                             userExists = true
-                            activeUser = User(user.username,user.password,null,null)
+                            activeUser = User(user.username,user.password,null,null,null,false)
                             break
                         }
                     }
@@ -443,16 +443,5 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-
-    @Preview
-    @Composable
-    fun PrimeiraTelaPreview() {
-
-        val tela = 0
-
-        if(tela == 0)
-          PrimeiraTela()
-        else
-          CreateAccountTela()
-    }
+    
 }

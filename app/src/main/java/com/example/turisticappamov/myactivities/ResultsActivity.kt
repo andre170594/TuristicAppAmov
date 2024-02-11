@@ -120,8 +120,7 @@ fun ResultsLayout(
             percentage = getScorePercentage(numCertas, ntotal),
             modifier = Modifier
                 .size(150.dp)
-                .padding(8.dp).fillMaxSize()
-        )
+                .padding(8.dp).fillMaxSize(), Color.Black)
 
         //  ** DEBUG **
         println("AKBARINO SCORE: " + getScorePercentage(numCertas, ntotal))

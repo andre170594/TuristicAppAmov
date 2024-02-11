@@ -15,8 +15,10 @@ import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.navigation.AppNavigation
 import com.example.turisticappamov.ui.theme.TuristicAppAmovTheme
+import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -74,12 +76,28 @@ class MenuActivity : ComponentActivity() {
 
             // track options in settings screen
             listaSettingsOpts = ArrayList()
+            optNightMode.value = activeUser.goDark ?: false
             listaSettingsOpts.add(optNightMode)
             listaSettingsOpts.add(optNotificationsOn)
             listaSettingsOpts.add(optShowFeed)
 
             setContent {
                 TuristicAppAmovTheme {
+                    if(listaSettingsOpts[0].value){
+                        activeUser.goDark = true
+                        val usersRef = Firebase.database.reference.child("users")
+                        val userRef = usersRef.child(activeUser.userID.toString())
+                        userRef.child("goDark").setValue(activeUser.goDark)
+
+                    }else{
+                        activeUser.goDark = false
+                        val usersRef = Firebase.database.reference.child("users")
+                        val userRef = usersRef.child(activeUser.userID.toString())
+                        userRef.child("goDark").setValue(activeUser.goDark)
+                    }
+
+
+
                     AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts)
                 }
             }
@@ -91,12 +109,4 @@ class MenuActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-}
-
-@Preview
-@Composable
-fun Test(){
-    val user = User("userID","Bulbassaur","pwd",89.5,null)
-    var lista = ArrayList<MutableState<Boolean>>()
-    AppNavigation(user,null, Intent(), LocalContext.current,lista)
 }

@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForward: () -> Unit) {
+fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForward: () -> Unit,textColor: Color,backgroundColor: Color) {
     val progress = (1 + current.toFloat()) / total.toFloat()
     val colorBox = Color(0x8068598A)
 
@@ -35,7 +35,7 @@ fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForwar
             .fillMaxWidth()
             .padding(16.dp)
             .background(
-                color = colorBox,
+                color = backgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
@@ -46,7 +46,7 @@ fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForwar
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(onClick = { onBack() }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back", tint = textColor)
             }
 
             Box(
@@ -72,20 +72,15 @@ fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForwar
                     modifier = Modifier
                         .align(Alignment.Center)
                         .padding(8.dp),
-                    color = Color(0xFF02181F),
+                    color = textColor,
                     fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace
                 )
             }
 
             IconButton(onClick = { onForward() }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Forward")
+                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Forward", tint = textColor)
             }
         }
     }
 }
 
-@Preview
-@Composable
-fun Test(){
-    ProgressBarNavigation(1,10,{},{})
-}

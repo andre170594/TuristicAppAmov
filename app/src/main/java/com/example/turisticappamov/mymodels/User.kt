@@ -7,9 +7,10 @@ class User (
     val username: String? = null,
     val password: String? = null,
     var lastScore: Double? = null,
-    var avgScores: ArrayList<Double>? = ArrayList()  // Initialize avgScores
+    var avgScores: ArrayList<Double>? = ArrayList(),
+    var goDark: Boolean? = null
 ): Serializable {
-    constructor(): this(null,null, null, 0.0, ArrayList())
+    constructor(): this(null,null, null, 0.0, ArrayList(),null)
     fun getAvgScoresList(): ArrayList<Double>? {
         return avgScores
     }

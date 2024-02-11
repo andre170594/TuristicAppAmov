@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -37,8 +39,24 @@ import com.example.turisticappamov.mymodels.User
 
 @Composable
 fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
-    val startColor = Color(0xFF111644)
-    val cardColor = Color(0xFF321B4F)
+
+    // DARK MODE
+    var startColor = Color(0xFFCBD5A5)
+    var endColor = Color(0xFFF3E9D4)
+    var cardColor = Color(0xFF4E6C50)
+    var btnColor = Color(0xFF4E6C50)
+    var btnTextColor = Color(0xFFEEF5EE)
+    var textColor = Color(0xFF617C63)
+    if(user.goDark == true){
+        startColor = Color(0xFF111644)
+        endColor = Color(0xFF321B4F)
+        cardColor = Color(0xFF321B4F)
+        btnColor = Color(0xFFC87ABE)
+        btnTextColor = Color(0xFFD7D0DB)
+        textColor = Color(0xFFD7D0DB)
+    }
+
+
 
     // PREPARE OPTS TO BE DISPLAYED
     val opt1 = "Dark Mode"
@@ -53,7 +71,7 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(startColor),
+            .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor))),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -63,7 +81,7 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
             text = "Settings",
             fontFamily = FontFamily.Serif,
             fontSize = 24.sp,
-            color = Color.White
+            color = textColor
         )
         Spacer(modifier = Modifier.height(66.dp))
 
@@ -73,14 +91,14 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
             contentDescription = "User Image",
             modifier = Modifier
                 .size(80.dp)
-                .clip(CircleShape)
+                .clip(CircleShape), colorFilter = ColorFilter.tint(textColor)
         )
         Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "${user.username}",
                 fontFamily = FontFamily.Serif,
                 fontSize = 20.sp,
-                color = Color.White,
+                color = textColor,
                 modifier = Modifier
                     .padding(top = 8.dp)
             )
@@ -90,12 +108,12 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
                 .padding(vertical = 2.dp, horizontal = 2.dp)
                 .size(width = 180.dp, height = 38.dp)
                 .clipToBounds(),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+            colors = ButtonDefaults.buttonColors(btnColor),
             shape = RoundedCornerShape(100.dp),
         ) {
             Text(
                 text = "Edit Photo",
-                color = Color.LightGray,
+                color = btnTextColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 2.dp),
@@ -123,10 +141,3 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
     }
 }
 
-@Preview
-@Composable
-fun T2(){
-    var lista = ArrayList<MutableState<Boolean>>()
-    SettingsScreen(User("Balbs","Jaffar Akbar"),lista)
-
-}

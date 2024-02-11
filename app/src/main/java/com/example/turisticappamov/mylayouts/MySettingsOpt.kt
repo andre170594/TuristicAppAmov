@@ -60,11 +60,11 @@ fun MySettingsOpt(text: String, icon: ImageVector, settingState: MutableState<Bo
                 onCheckedChange = {onClick()},
                 modifier = Modifier.padding(end = 8.dp),
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = Color(0xFFC6B9DF),
-                    checkedTrackColor = Color(0xFF3666A3),
+                    checkedThumbColor = Color(0xFF5C5E5E),
+                    checkedTrackColor = Color(0xFFFFFFFF),
                     checkedIconColor = Color(0xFF3C2C5C),
-                    uncheckedThumbColor = Color(0xFFC6B9DF),
-                    uncheckedTrackColor = Color(0xFFE5E5E5),
+                    uncheckedThumbColor = Color(0xFF5C5E5E),
+                    uncheckedTrackColor = Color(0xFFFFFFFF),
                     uncheckedIconColor = Color(0xFF3C2C5C)
                 )
 

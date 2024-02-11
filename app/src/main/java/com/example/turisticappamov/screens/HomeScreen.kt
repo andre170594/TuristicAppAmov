@@ -17,12 +17,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -36,15 +38,31 @@ import com.example.turisticappamov.mymodels.User
 
 
 @Composable
-fun HomeScreen(user: User, intent: Intent, content: Context) {
-    val startColor = Color(0xFF585069)
-    val endColor = Color(0xFF1F1A2B)
+fun HomeScreen(user: User, intent: Intent, content: Context,listaSettings: ArrayList<MutableState<Boolean>>) {
+    // DARK MODE
+    var testDarkMode = false
+    var startColor = Color(0xFFCBD5A5)
+    var endColor = Color(0xFFF3E9D4)
+    var textColor = Color(0xFF617C63)
+    var widgetBackColor = Color(0xFFFEFAE8)
+    var btnColor = Color(0xFF4E6C50)
+    var btnTextColor = Color(0xFFDCE6DC)
+    if(user.goDark == true){
+        startColor = Color(0xFF111644)
+        endColor = Color(0xFF321B4F)
+        textColor = Color(0xFF9FA8DA)
+        widgetBackColor = Color(0xFF45256D)
+        btnColor = Color(0xFFC87ABE)
+        btnTextColor = Color(0xFFD7D0DB)
+        testDarkMode = true
+    }
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor)))
-            .padding(24.dp),
+            .padding(top = 0.dp, start = 24.dp, end = 24.dp, bottom = 12.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -54,17 +72,17 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
             contentDescription = "Logo",
             modifier = Modifier
                 .scale(3.0f)
-                .padding(top = 2.dp, bottom = 6.dp)
-                .fillMaxWidth()
+                .padding(top = 0.dp, bottom = 6.dp)
+                .fillMaxWidth(), colorFilter = ColorFilter.tint(textColor)
         )
         Text(
             text = "Devs on Tour",
-            modifier = Modifier.padding(bottom = 10.dp, top = 20.dp), fontFamily = FontFamily.Monospace
+            modifier = Modifier.padding(bottom = 10.dp, top = 20.dp), fontFamily = FontFamily.Monospace, color = textColor
         )
         Text(
             text = "Hi ${user.username}",
-            modifier = Modifier.padding(bottom = 40.dp, top = 10.dp),
-            fontSize = 24.sp, fontFamily = FontFamily.Monospace
+            modifier = Modifier.padding(bottom = 40.dp, top = 20.dp),
+            fontSize = 24.sp, fontFamily = FontFamily.Monospace, color = textColor
         )
         // 1Row
         Row(
@@ -76,7 +94,7 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
             Box( // LAST SCORE WIDGET
                 modifier = Modifier
                     .size(150.dp)
-                    .background(color = Color.Gray, shape = RoundedCornerShape(16.dp))
+                    .background(color = widgetBackColor, shape = RoundedCornerShape(16.dp))
                     .padding(8.dp)
             ) {
               Column(
@@ -86,29 +104,26 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
               ) {
                   Text(
                       text = "Last",
-                      color = Color.LightGray,
+                      color = textColor,
                       modifier = Modifier
                           .fillMaxWidth()
                           .padding(horizontal = 20.dp)
                           .padding(bottom = 6.dp),
                       textAlign = TextAlign.Center,
-                      fontSize = 14.sp, fontFamily = FontFamily.Monospace
+                      fontSize = 16.sp, fontFamily = FontFamily.Monospace
                   )
                   RoundProgressBar(
                       percentage = getUserLastScore(user),
                       modifier = Modifier
                           .fillMaxSize()
-                          .padding(8.dp)
+                          .padding(8.dp),textColor
                   )
               }
-
-
-
             }
             Box( // AVG SCORE WIDGET
                 modifier = Modifier
                     .size(150.dp)
-                    .background(color = Color.Gray, shape = RoundedCornerShape(16.dp))
+                    .background(widgetBackColor, shape = RoundedCornerShape(16.dp))
                     .padding(8.dp)
             ) {
 
@@ -119,34 +134,34 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                 ) {
                     Text(
                         text = "AVG",
-                        color = Color.LightGray,
+                        color = textColor,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp)
                             .padding(bottom = 6.dp),
                         textAlign = TextAlign.Center,
-                        fontSize = 14.sp, fontFamily = FontFamily.Monospace
+                        fontSize = 16.sp, fontFamily = FontFamily.Monospace
                     )
                     RoundProgressBar(
                         percentage = getAvgScore(user),
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(8.dp)
+                            .padding(8.dp),textColor
                     )
                 }
             }
         }
         Button(
-            onClick = { startTest("teste01", user, intent, content) },
+            onClick = { startTest("teste01", user, intent, content,testDarkMode) },
             modifier = Modifier
                 .padding(vertical = 10.dp, horizontal = 20.dp)
                 .clipToBounds(),
-            colors = ButtonDefaults.buttonColors(startColor),
+            colors = ButtonDefaults.buttonColors(btnColor),
             shape = RoundedCornerShape(100.dp),
         ) {
             Text(
                 text = "Start",
-                color = Color.LightGray,
+                color = btnTextColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
@@ -169,9 +184,16 @@ fun getAvgScore(user: User): Double {
     }else
         0.0
 }
-fun startTest(selectedOPT: String, user: User, intent: Intent, content:Context) {
+fun startTest(
+    selectedOPT: String,
+    user: User,
+    intent: Intent,
+    content: Context,
+    testDarkMode: Boolean
+) {
     intent.putExtra("USER",user)
     intent.putExtra("TEST",selectedOPT)
+    intent.putExtra("GoDARK",testDarkMode)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(content,intent,null)
 

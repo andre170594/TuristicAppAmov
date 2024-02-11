@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
 
 @Composable
-fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
+fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier,textColor: Color) {
     Box(
         modifier = modifier
             .aspectRatio(1f)
@@ -49,7 +49,7 @@ fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier) {
         }
         Text(
             text = "${percentage.roundToInt()}%",
-            color = Color.Black,
+            color = textColor,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )

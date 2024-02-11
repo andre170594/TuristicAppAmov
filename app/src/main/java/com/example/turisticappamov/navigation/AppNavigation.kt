@@ -2,7 +2,7 @@ package com.example.turisticappamov.navigation
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -37,9 +37,23 @@ import com.example.turisticappamov.screens.SettingsScreen
 fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent, content:Context,listaSettings: ArrayList<MutableState<Boolean>>){
     val navController:NavHostController = rememberNavController()
 
+    // TODO
+    // rest of the color of navBar
+    var navBarTextColor = Color(0xFFE2E7EB)
+    var navBarIconColor = Color(0xFF52534D)
+    var navBarColor = Color(0xFF4E6C50)
+    if(user.goDark==true){
+        navBarColor = Color(0xFF111644)
+        navBarTextColor = Color(0xFFCAD7DF)
+        navBarIconColor = Color(0xFFCE93D8)
+    }
+
+
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                containerColor = navBarColor
+            ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
 
@@ -57,12 +71,12 @@ fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent,
                         },
                         icon = {
                             Icon(
-                                imageVector = navItem.icon , 
-                                contentDescription = null
+                                imageVector = navItem.icon ,
+                                contentDescription = null, tint = navBarIconColor
                             )
                         },
                         label = {
-                            Text(text = navItem.label)
+                            Text(text = navItem.label, color = navBarTextColor)
                         }
                     )
                 }
@@ -77,20 +91,14 @@ fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent,
 
         ){
             composable(route = Screens.HomeScreen.name){
-                HomeScreen(user,intent,content)
+                HomeScreen(user,intent,content,listaSettings)
             }
             composable(route = Screens.ProfileScreen.name){
-                ProfileScreen(listFeedItems)
+                ProfileScreen(user,listFeedItems,listaSettings)
             }
             composable(route = Screens.SettingsScreen.name){
                 SettingsScreen(user,listaSettings)
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun Test(){
-
 }
