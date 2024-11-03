@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -36,9 +42,8 @@ import com.example.turisticappamov.mylayouts.RoundProgressBar
 import com.example.turisticappamov.mymodels.User
 
 
-
 @Composable
-fun HomeScreen(user: User, intent: Intent, content: Context,listaSettings: ArrayList<MutableState<Boolean>>) {
+fun HomeScreen(user: User, intent: Intent, content: Context) {
     // DARK MODE
     var testDarkMode = false
     var startColor = Color(0xFFCBD5A5)
@@ -56,6 +61,12 @@ fun HomeScreen(user: User, intent: Intent, content: Context,listaSettings: Array
         btnTextColor = Color(0xFFD7D0DB)
         testDarkMode = true
     }
+
+    // Option picker state
+    var selectedOption by remember { mutableStateOf("CAD") }
+    var expanded by remember { mutableStateOf(false) }
+    val options = listOf("CAD", "CSA", "CIS-HR")
+
 
 
     Column(
@@ -151,8 +162,44 @@ fun HomeScreen(user: User, intent: Intent, content: Context,listaSettings: Array
                 }
             }
         }
+
+
+
+        // Option Picker Dropdown
+        Text(
+            text = "Select Certification",
+            color = textColor,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Box {
+            Text(
+                text = selectedOption,
+                color = textColor,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .background(widgetBackColor, shape = RoundedCornerShape(8.dp))
+                    .padding(12.dp)
+                    .clickable { expanded = true }
+            )
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                options.forEach {option -> 
+                    DropdownMenuItem(
+                        text = { Text(text = option, color = textColor)},
+                        onClick = {
+                            selectedOption = option
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+
         Button(
-            onClick = { startTest("teste01", user, intent, content,testDarkMode) },
+            onClick = { startTest("teste01", user, intent, content,testDarkMode,selectedOption) },
             modifier = Modifier
                 .padding(vertical = 10.dp, horizontal = 20.dp)
                 .clipToBounds(),
@@ -189,13 +236,17 @@ fun startTest(
     user: User,
     intent: Intent,
     content: Context,
-    testDarkMode: Boolean
+    testDarkMode: Boolean,
+    selectedOption: String
 ) {
+
     intent.putExtra("USER",user)
     intent.putExtra("TEST",selectedOPT)
     intent.putExtra("GoDARK",testDarkMode)
+    intent.putExtra("TESTTYPE",selectedOption)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(content,intent,null)
-
 }
+
+
 

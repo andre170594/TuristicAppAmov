@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.User
@@ -31,7 +29,6 @@ class MenuActivity : ComponentActivity() {
     private lateinit var liveFeed: ArrayList<FeedItem>
     private lateinit var database: FirebaseDatabase
     private lateinit var feedsRef: DatabaseReference
-
     private var optNightMode = mutableStateOf(false)
     private var optNotificationsOn = mutableStateOf(true)
     private var optShowFeed = mutableStateOf(true)
@@ -68,7 +65,6 @@ class MenuActivity : ComponentActivity() {
                     }
                     list
                 }
-
                 liveFeed = feedsList
             } catch (e: Exception) {
                 println("Failed to retrieve feed: ${e.message}")
@@ -95,10 +91,8 @@ class MenuActivity : ComponentActivity() {
                         val userRef = usersRef.child(activeUser.userID.toString())
                         userRef.child("goDark").setValue(activeUser.goDark)
                     }
-
-
-
-                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts)
+                    val lazyListState = rememberLazyListState()
+                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,lazyListState)
                 }
             }
         }

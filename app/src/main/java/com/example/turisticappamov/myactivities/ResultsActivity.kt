@@ -41,7 +41,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 import kotlin.math.roundToInt
 
-
 class ResultsActivity : ComponentActivity() {
 
     private var numCertas:Int = 10
@@ -57,7 +56,6 @@ class ResultsActivity : ComponentActivity() {
         numTotal = intent.getIntExtra("TOTALQ",0)
         listaErradas = intent.getSerializableExtra("WRONG_QUESTIONS") as ArrayList<Question>
         activeUser= (intent.getSerializableExtra("USER") as? User)!!
-
 
         val startColor = Color(0xFF44617E)
         val endColor = Color(0xFF373D37)
@@ -87,10 +85,7 @@ class ResultsActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-
-
 }
-
 
 @Composable
 fun ResultsLayout(
@@ -121,12 +116,6 @@ fun ResultsLayout(
             modifier = Modifier
                 .size(150.dp)
                 .padding(8.dp).fillMaxSize(), Color.Black)
-
-        //  ** DEBUG **
-        println("AKBARINO SCORE: " + getScorePercentage(numCertas, ntotal))
-        println("AKBARINO certas: $numCertas")
-        println("AKBARINO size: $ntotal")
-        //  ** END **
 
         // Display List of Wrong Questions
         if (listaErradas.isNotEmpty()) {
@@ -200,34 +189,7 @@ fun updateScores(activeUser: User, scorePercentage: Double) {
     userRef.child("lastScore").setValue(activeUser.lastScore)
 }
 
-
 fun getScorePercentage(numCertas: Int, size: Int): Double {
     return ((numCertas / size.toDouble()) * 100)
-}
-
-@Preview
-@Composable
-fun Te() {
-
-
-    val opts1 = ParOptionsAnswers("test_opts1", answers = true, selected = true)
-    val opts2 = ParOptionsAnswers("test_opts12", answers = true, selected = false)
-    val opts3 = ParOptionsAnswers("test_opts13", answers = true, selected = false)
-    val opts4 = ParOptionsAnswers("test_opts14", answers = true, selected = false)
-
-    val listOpts = ArrayList<ParOptionsAnswers>()
-    listOpts.add(opts1)
-    listOpts.add(opts2)
-    listOpts.add(opts3)
-    listOpts.add(opts4)
-
-    val quest = Question("Teste corpo da pergunta.. bla bla bla ", listOpt = listOpts, "explain", 1)
-    val listaQuests = ArrayList<Question>()
-    listaQuests.add(quest)
-    listaQuests.add(quest)
-
-    val us = User("Jaffar", "pwd")
-    ResultsLayout(LocalContext.current,1,listaQuests,us,Color(0xFF44617E),Color(0xFF373D37),10)
-
 }
 

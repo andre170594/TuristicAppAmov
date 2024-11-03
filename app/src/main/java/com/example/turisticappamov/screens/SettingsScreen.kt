@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -30,7 +29,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.R.drawable
@@ -55,9 +53,8 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
         btnTextColor = Color(0xFFD7D0DB)
         textColor = Color(0xFFD7D0DB)
     }
-
-
-
+    
+    
     // PREPARE OPTS TO BE DISPLAYED
     val opt1 = "Dark Mode"
     val opt2 = "Notification"
@@ -138,6 +135,8 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
+
     }
 }
+
 

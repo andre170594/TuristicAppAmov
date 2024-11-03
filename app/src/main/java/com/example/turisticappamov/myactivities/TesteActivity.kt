@@ -9,12 +9,13 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -48,7 +49,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
+@Suppress("NAME_SHADOWING")
 class TesteActivity : ComponentActivity() {
+
+    // CAD EXAMS
+
 
     private lateinit var listaQuestions: ArrayList<Question>
     private var totalQuestions: Int = 0
@@ -65,7 +70,7 @@ class TesteActivity : ComponentActivity() {
         val goDark = intent.getBooleanExtra("GoDARK",false)
 
 
-        initGame {
+        initGame({
             setContent {
                 TuristicAppAmovTheme {
                     Surface(
@@ -76,7 +81,7 @@ class TesteActivity : ComponentActivity() {
                             listaQuestions,
                             activeUser,
                             prog,
-                            totalQuestions,
+                            50,
                             globalSelectedCount,
                             onGlobalSelectedCountChange = { newCount -> globalSelectedCount = newCount},
                             onBack = { goBack() },
@@ -87,7 +92,7 @@ class TesteActivity : ComponentActivity() {
                     }
                 }
             }
-        }
+        }, "CAD")
     }
 
     private fun goFullScreen() {
@@ -96,8 +101,10 @@ class TesteActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-    private fun initGame(callback: (ArrayList<Question>) -> Unit) {
+    private fun initGame(callback: (ArrayList<Question>) -> Unit,testType: String) {
         activeUser = intent.getSerializableExtra("USER") as? User ?: User()
+        val testType = intent.getStringExtra("TESTTYPE")
+        val pathToQuestions = "questions/$testType"
 
         listaQuestions = ArrayList()
 
@@ -105,7 +112,7 @@ class TesteActivity : ComponentActivity() {
             try {
                 // Initialize Firebase
                 database = FirebaseDatabase.getInstance()
-                questionsRef = database.getReference("questions")
+                questionsRef = database.getReference(pathToQuestions)
                 // Fetch questions from Firebase
                 val questionList = withContext(Dispatchers.IO) {
                     val dataSnapshot = questionsRef.get().await()
@@ -182,15 +189,11 @@ fun TestLayout(
     // DARK MODE
     var startColor = Color(0xFFCBD5A5)
     var endColor = Color(0xFFF3E9D4)
-    var textColor = Color(0xFF617C63)
-    var widgetBackColor = Color(0xFFFEFAE8)
     var btnColor = Color(0xFF4E6C50)
     var btnTextColor = Color(0xFFDCE6DC)
     if(goDark){
         startColor = Color(0xFF111644)
         endColor = Color(0xFF321B4F)
-        textColor = Color(0xFF9FA8DA)
-        widgetBackColor = Color(0xFF45256D)
         btnColor = Color(0xFFC87ABE)
         btnTextColor = Color(0xFFD7D0DB)
     }
@@ -202,43 +205,55 @@ fun TestLayout(
             .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor)))
             .padding(8.dp)
     ) {
-        Column {
-            ProgressBarNavigation(
-                current = prog,
-                total = numTotal,
-                onBack = {  onBack() },
-                onForward = { onForward() },btnTextColor,btnColor
-            )
-            MyQuestion(listaQuestions, prog)
-            // Display options
-            val listOpt = listaQuestions[prog].listOpt
-            listOpt?.forEach {
-                MyOption(
-                    it,
-                    listaQuestions[prog].numCorrect,
-                    globalSelectedCount
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp) // Adjust space between items if desired
+        ) {
+            item {
+                ProgressBarNavigation(
+                    current = prog,
+                    total = numTotal,
+                    onBack = { onBack() },
+                    onForward = { onForward() },
+                    textColor = btnTextColor,
+                    backgroundColor = btnColor
                 )
-                { newCount -> onGlobalSelectedCountChange(newCount)
-                }
             }
 
-            if(prog == listaQuestions.size -1){
-                Button(onClick = { submitAnswers(listaQuestions,activeUser, context) },
-                    modifier = Modifier
-                        .padding(vertical = 10.dp, horizontal = 20.dp)
-                        .clipToBounds(),
-                    colors = ButtonDefaults.buttonColors(btnColor),
-                    shape = RoundedCornerShape(100.dp),
-                ) {
-                    Text(
-                        text = "SUBMIT",
-                        color = Color.LightGray,
+            item {
+                MyQuestion(listaQuestions, prog)
+            }
+            // Display options as separate items in the LazyColumn
+            val listOpt = listaQuestions[prog].listOpt
+            items(listOpt!!.size) { index ->
+                MyOption(
+                    listOpt[index],
+                    listaQuestions[prog].numCorrect,
+                    globalSelectedCount
+                ) { newCount -> onGlobalSelectedCountChange(newCount) }
+            }
+
+            // Conditional Submit Button at the end
+            if (prog == listaQuestions.size - 1) {
+                item {
+                    Button(
+                        onClick = { submitAnswers(listaQuestions, activeUser, context) },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp
-                    )
+                            .padding(vertical = 10.dp, horizontal = 20.dp)
+                            .clipToBounds(),
+                        colors = ButtonDefaults.buttonColors(btnColor),
+                        shape = RoundedCornerShape(100.dp),
+                    ) {
+                        Text(
+                            text = "SUBMIT",
+                            color = Color.LightGray,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            textAlign = TextAlign.Center,
+                            fontSize = 14.sp
+                        )
+                    }
                 }
             }
         }

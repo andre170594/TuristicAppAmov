@@ -4,21 +4,18 @@ import android.content.Context
 import android.content.Intent
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.graphics.Color
-
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -34,7 +31,14 @@ import com.example.turisticappamov.screens.SettingsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent, content:Context,listaSettings: ArrayList<MutableState<Boolean>>){
+fun AppNavigation(
+    user: User,
+    listFeedItems: ArrayList<FeedItem>?,
+    intent: Intent,
+    content: Context,
+    listaSettings: ArrayList<MutableState<Boolean>>,
+    lazyListState: LazyListState
+){
     val navController:NavHostController = rememberNavController()
 
     // TODO
@@ -47,7 +51,6 @@ fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent,
         navBarTextColor = Color(0xFFCAD7DF)
         navBarIconColor = Color(0xFFCE93D8)
     }
-
 
     Scaffold(
         bottomBar = {
@@ -91,10 +94,10 @@ fun AppNavigation(user: User,listFeedItems:ArrayList<FeedItem>?, intent: Intent,
 
         ){
             composable(route = Screens.HomeScreen.name){
-                HomeScreen(user,intent,content,listaSettings)
+                HomeScreen(user,intent,content)
             }
             composable(route = Screens.ProfileScreen.name){
-                ProfileScreen(user,listFeedItems,listaSettings)
+                ProfileScreen(user,listFeedItems,lazyListState)
             }
             composable(route = Screens.SettingsScreen.name){
                 SettingsScreen(user,listaSettings)
