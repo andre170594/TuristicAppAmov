@@ -1,4 +1,5 @@
 package com.example.turisticappamov.screens
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
@@ -32,11 +35,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.R.drawable
+import com.example.turisticappamov.myactivities.MenuActivity
 import com.example.turisticappamov.mylayouts.MySettingsOpt
 import com.example.turisticappamov.mymodels.User
 
 @Composable
-fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
+fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,menuActivity: MenuActivity) {
 
     // DARK MODE
     var startColor = Color(0xFFCBD5A5)
@@ -49,7 +53,7 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
         startColor = Color(0xFF111644)
         endColor = Color(0xFF321B4F)
         cardColor = Color(0xFF321B4F)
-        btnColor = Color(0xFFC87ABE)
+        btnColor = Color(0xFF81577C)
         btnTextColor = Color(0xFFD7D0DB)
         textColor = Color(0xFFD7D0DB)
     }
@@ -68,7 +72,8 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor))),
+            .background(brush = Brush.linearGradient(colors = listOf(startColor, endColor)))
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -136,7 +141,37 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>) {
         }
         Spacer(modifier = Modifier.height(6.dp))
 
+        Button(onClick = { clearCredentials(menuActivity)},
+            modifier = Modifier
+                .padding(vertical = 2.dp, horizontal = 2.dp)
+                .size(width = 180.dp, height = 38.dp)
+                .clipToBounds(),
+            colors = ButtonDefaults.buttonColors(btnColor),
+            shape = RoundedCornerShape(100.dp),
+        ) {
+            Text(
+                text = "Logout",
+                color = btnTextColor,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 2.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 14.sp
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+
+
     }
+}
+
+ fun clearCredentials(menuActivity: MenuActivity) {
+    val sharedPref = menuActivity.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    with(sharedPref.edit()) {
+        clear()
+        apply()
+    }
+     menuActivity.finishAffinity()
 }
 
 

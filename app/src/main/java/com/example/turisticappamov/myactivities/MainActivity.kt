@@ -2,6 +2,7 @@
 package com.example.turisticappamov.myactivities
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -76,21 +77,31 @@ class MainActivity : ComponentActivity() {
             // Permission is not granted, request it
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.INTERNET), REQUEST_INTERNET_PERMISSION)
         }
-        setContent {
-            TuristicAppAmovTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    if(createAccount.value)
-                        CreateAccountTela()
-                    else
-                        PrimeiraTela()
+
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val savedUsername = sharedPref.getString("USERNAME", null)
+        val savedPassword = sharedPref.getString("PASSWORD", null)
+
+        if (savedUsername != null && savedPassword != null) {
+            loginDo(savedUsername, savedPassword)
+        } else{
+            setContent {
+                TuristicAppAmovTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        if(createAccount.value)
+                            CreateAccountTela()
+                        else
+                            PrimeiraTela()
+                    }
                 }
             }
         }
     }
 
     // CREATE ACCOUNT
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun CreateAccountTela() {
@@ -129,7 +140,7 @@ class MainActivity : ComponentActivity() {
             Text(
                 text = "Devs on Tour",
                 modifier = Modifier
-                    .padding(bottom = 80.dp, top = 20.dp), fontFamily = FontFamily.Monospace
+                    .padding(bottom = 80.dp, top = 30.dp), fontFamily = FontFamily.Monospace
             )
             Text(
                 text = "Lets create an account!",
@@ -148,12 +159,15 @@ class MainActivity : ComponentActivity() {
                     .padding(12.dp, 8.dp),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = transparency
-                ),leadingIcon = {
+                ),
+                leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Person,contentDescription = "create image"
                     )
                 }
             )
+
+
             TextField(
                 value = password,
                 onValueChange = { password = it },
@@ -230,7 +244,7 @@ class MainActivity : ComponentActivity() {
                             // Check if the userId is not null
                             if (userId != null) {
                                 // Create a new user object
-                                val newUser = User(userId,username, password,null,null,false)
+                                val newUser = User(userId,username, password,null,null,false,true)
                                 // Insert the new user into the database under the generated userId
                                 databaseRef.child(userId).setValue(newUser)
                                     .addOnSuccessListener {
@@ -396,7 +410,7 @@ class MainActivity : ComponentActivity() {
                 databaseRef
             ) { exists ->
                 if (exists) {
-                    println("AKBARINO Login successfully")
+                    saveCredentials(userName, password) // Save credentials
                     val intent = Intent(this@MainActivity, MenuActivity::class.java)
                     intent.putExtra("USER",activeUser)
                     startActivity(intent)
@@ -418,13 +432,16 @@ class MainActivity : ComponentActivity() {
                     for (snapshot in dataSnapshot.children) {
                         val user = snapshot.getValue(User::class.java)
 
-                        if (user != null && user.password == password && user.lastScore != null && user.getAvgScoresList() != null && user.goDark != null) {
+                        if (user != null && user.password == password && user.lastScore != null && user.getAvgScoresList() != null && user.goDark != null && user.goFeed != null) {
                             userExists = true
-                            activeUser = User(user.userID,user.username,user.password,user.lastScore,user.getAvgScoresList(),user.goDark)
+                            activeUser = User(user.userID,user.username,user.password,user.lastScore,user.getAvgScoresList(),user.goDark,user.goFeed)
                             break
                         }else if(user != null && user.password == password){
                             userExists = true
-                            activeUser = User(user.username,user.password,null,null,null,false)
+                            activeUser = User(user.username,user.password,null,null,null,
+                                goDark = false,
+                                goFeed = true
+                            )
                             break
                         }
                     }
@@ -442,5 +459,14 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-    
+    private fun saveCredentials(username: String, password: String) {
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("USERNAME", username)
+            putString("PASSWORD", password)
+            apply()
+        }
+    }
+
+
 }

@@ -73,12 +73,14 @@ class MenuActivity : ComponentActivity() {
             // track options in settings screen
             listaSettingsOpts = ArrayList()
             optNightMode.value = activeUser.goDark ?: false
+            optShowFeed.value = activeUser.goFeed ?: false
             listaSettingsOpts.add(optNightMode)
             listaSettingsOpts.add(optNotificationsOn)
             listaSettingsOpts.add(optShowFeed)
 
             setContent {
                 TuristicAppAmovTheme {
+                    // update dark mode na BD
                     if(listaSettingsOpts[0].value){
                         activeUser.goDark = true
                         val usersRef = Firebase.database.reference.child("users")
@@ -91,8 +93,22 @@ class MenuActivity : ComponentActivity() {
                         val userRef = usersRef.child(activeUser.userID.toString())
                         userRef.child("goDark").setValue(activeUser.goDark)
                     }
+                    // update Feed na BD
+                    if(listaSettingsOpts[2].value){
+                        activeUser.goFeed = true
+                        val usersRef = Firebase.database.reference.child("users")
+                        val userRef = usersRef.child(activeUser.userID.toString())
+                        userRef.child("goFeed").setValue(activeUser.goFeed)
+
+                    }else{
+                        activeUser.goFeed = false
+                        val usersRef = Firebase.database.reference.child("users")
+                        val userRef = usersRef.child(activeUser.userID.toString())
+                        userRef.child("goFeed").setValue(activeUser.goFeed)
+                    }
+
                     val lazyListState = rememberLazyListState()
-                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,lazyListState)
+                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,lazyListState,this@MenuActivity)
                 }
             }
         }

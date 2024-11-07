@@ -1,6 +1,5 @@
 package com.example.turisticappamov.myactivities
 
-
 import android.content.Context
 import android.content.Intent
 import com.example.turisticappamov.mylayouts.MyOption
@@ -49,14 +48,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-@Suppress("NAME_SHADOWING")
 class TesteActivity : ComponentActivity() {
 
-    // CAD EXAMS
-
-
+    // EXAMS PLAYGROUND
     private lateinit var listaQuestions: ArrayList<Question>
-    private var totalQuestions: Int = 0
+    private var totalQuestions: Int = 50
     private lateinit var database: FirebaseDatabase
     private lateinit var questionsRef: DatabaseReference
     private lateinit var activeUser: User
@@ -68,9 +64,10 @@ class TesteActivity : ComponentActivity() {
         goFullScreen()
 
         val goDark = intent.getBooleanExtra("GoDARK",false)
+        val testType = intent.getStringExtra("TESTTYPE")
 
 
-        initGame({
+        initGame {
             setContent {
                 TuristicAppAmovTheme {
                     Surface(
@@ -81,18 +78,19 @@ class TesteActivity : ComponentActivity() {
                             listaQuestions,
                             activeUser,
                             prog,
-                            50,
+                            totalQuestions,
                             globalSelectedCount,
-                            onGlobalSelectedCountChange = { newCount -> globalSelectedCount = newCount},
+                            onGlobalSelectedCountChange = { newCount -> globalSelectedCount = newCount },
                             onBack = { goBack() },
-                            onForward = { goForward() }, LocalContext.current,
-                            goDark
-
+                            onForward = { goForward() },
+                            LocalContext.current,
+                            goDark,
+                            testType!!,
                         )
                     }
                 }
             }
-        }, "CAD")
+        }
     }
 
     private fun goFullScreen() {
@@ -101,7 +99,8 @@ class TesteActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
     }
-    private fun initGame(callback: (ArrayList<Question>) -> Unit,testType: String) {
+
+    private fun initGame(callback: (ArrayList<Question>) -> Unit) {
         activeUser = intent.getSerializableExtra("USER") as? User ?: User()
         val testType = intent.getStringExtra("TESTTYPE")
         val pathToQuestions = "questions/$testType"
@@ -116,7 +115,7 @@ class TesteActivity : ComponentActivity() {
                 // Fetch questions from Firebase
                 val questionList = withContext(Dispatchers.IO) {
                     val dataSnapshot = questionsRef.get().await()
-                    val list = ArrayList<Question>()
+                    var list = ArrayList<Question>()
                     for (questionSnapshot in dataSnapshot.children) {
                         val pergunta = questionSnapshot.child("pergunta").getValue(String::class.java)
                         val listOpt = questionSnapshot.child("listOpt").getValue(object :
@@ -133,6 +132,10 @@ class TesteActivity : ComponentActivity() {
                         list.add(question)
                     }
                     list.shuffle()
+
+                    val listTem = list.take(totalQuestions)
+                    list= listTem as ArrayList<Question>
+
                     for (quest in list) {
                         quest.listOpt?.shuffle()
                     }
@@ -183,8 +186,10 @@ fun TestLayout(
     onGlobalSelectedCountChange: (Int) -> Unit,
     onBack: () -> Unit,
     onForward: () -> Unit, context: Context,
-    goDark: Boolean
-) {
+    goDark: Boolean,
+    testType: String,
+    ) {
+
 
     // DARK MODE
     var startColor = Color(0xFFCBD5A5)
@@ -194,7 +199,7 @@ fun TestLayout(
     if(goDark){
         startColor = Color(0xFF111644)
         endColor = Color(0xFF321B4F)
-        btnColor = Color(0xFFC87ABE)
+        btnColor = Color(0xFF815E7D)
         btnTextColor = Color(0xFFD7D0DB)
     }
 
@@ -237,7 +242,7 @@ fun TestLayout(
             if (prog == listaQuestions.size - 1) {
                 item {
                     Button(
-                        onClick = { submitAnswers(listaQuestions, activeUser, context) },
+                        onClick = { submitAnswers(listaQuestions, activeUser, context,testType) },
                         modifier = Modifier
                             .padding(vertical = 10.dp, horizontal = 20.dp)
                             .clipToBounds(),
@@ -259,17 +264,26 @@ fun TestLayout(
         }
     }
 }
-fun submitAnswers(listaQuestions: ArrayList<Question>, activeUser: User, context: Context) {
+fun submitAnswers(
+    listaQuestions: ArrayList<Question>,
+    activeUser: User,
+    context: Context,
+    testName: String,
+) {
     // get wrong questions
     val wrongQuestions = getWrongQuestions(listaQuestions)
     val numCertas = listaQuestions.size - wrongQuestions.size
+
+
 
     val intent = Intent(context, ResultsActivity::class.java)
     intent.putExtra("WRONG_QUESTIONS", wrongQuestions)
     intent.putExtra("NUM_CERTAS", numCertas)
     intent.putExtra("TOTALQ", listaQuestions.size)
     intent.putExtra("USER", activeUser)
+    intent.putExtra("TESTNAME",testName)
     context.startActivity(intent)
+
 }
 fun getWrongQuestions(listaQuestions: ArrayList<Question>): ArrayList<Question> {
     val wrongQuestions = ArrayList<Question>()

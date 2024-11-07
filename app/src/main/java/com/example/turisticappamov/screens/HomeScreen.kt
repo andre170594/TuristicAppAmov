@@ -2,6 +2,11 @@ package com.example.turisticappamov.screens
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +25,8 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +50,11 @@ import com.example.turisticappamov.mymodels.User
 
 
 @Composable
-fun HomeScreen(user: User, intent: Intent, content: Context) {
+fun HomeScreen(
+    user: User,
+    intent: Intent,
+    content: Context
+) {
     // DARK MODE
     var testDarkMode = false
     var startColor = Color(0xFFCBD5A5)
@@ -57,16 +68,14 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
         endColor = Color(0xFF321B4F)
         textColor = Color(0xFF9FA8DA)
         widgetBackColor = Color(0xFF45256D)
-        btnColor = Color(0xFFC87ABE)
+        btnColor = Color(0xFF81577C)
         btnTextColor = Color(0xFFD7D0DB)
         testDarkMode = true
     }
-
     // Option picker state
     var selectedOption by remember { mutableStateOf("CAD") }
     var expanded by remember { mutableStateOf(false) }
     val options = listOf("CAD", "CSA", "CIS-HR")
-
 
 
     Column(
@@ -82,19 +91,22 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             modifier = Modifier
-                .scale(3.0f)
+                .scale(2.0f)
                 .padding(top = 0.dp, bottom = 6.dp)
                 .fillMaxWidth(), colorFilter = ColorFilter.tint(textColor)
         )
-        Text(
-            text = "Devs on Tour",
-            modifier = Modifier.padding(bottom = 10.dp, top = 20.dp), fontFamily = FontFamily.Monospace, color = textColor
-        )
-        Text(
-            text = "Hi ${user.username}",
-            modifier = Modifier.padding(bottom = 40.dp, top = 20.dp),
-            fontSize = 24.sp, fontFamily = FontFamily.Monospace, color = textColor
-        )
+
+      Text(
+          text = "Devs on Tour",
+          modifier = Modifier.padding(bottom = 10.dp, top = 20.dp), fontFamily = FontFamily.Monospace, color = textColor
+      )
+
+
+
+      //  AnimatedGreetingText("Devs on Tour",textColor)
+        AnimatedGreetingText("Hi " + user.username.toString(),textColor)
+
+
         // 1Row
         Row(
             modifier = Modifier
@@ -157,7 +169,8 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                         percentage = getAvgScore(user),
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(8.dp),textColor
+                            .padding(8.dp),
+                        textColor
                     )
                 }
             }
@@ -187,7 +200,7 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
                 onDismissRequest = { expanded = false }
             ) {
                 options.forEach {option -> 
-                    DropdownMenuItem(
+                    DropdownMenuItem(modifier = Modifier.background(widgetBackColor),
                         text = { Text(text = option, color = textColor)},
                         onClick = {
                             selectedOption = option
@@ -199,7 +212,7 @@ fun HomeScreen(user: User, intent: Intent, content: Context) {
         }
 
         Button(
-            onClick = { startTest("teste01", user, intent, content,testDarkMode,selectedOption) },
+            onClick = { startTest(user, intent, content,testDarkMode,selectedOption) },
             modifier = Modifier
                 .padding(vertical = 10.dp, horizontal = 20.dp)
                 .clipToBounds(),
@@ -232,21 +245,56 @@ fun getAvgScore(user: User): Double {
         0.0
 }
 fun startTest(
-    selectedOPT: String,
     user: User,
     intent: Intent,
     content: Context,
     testDarkMode: Boolean,
-    selectedOption: String
+    selectedOption: String,
 ) {
-
     intent.putExtra("USER",user)
-    intent.putExtra("TEST",selectedOPT)
     intent.putExtra("GoDARK",testDarkMode)
     intent.putExtra("TESTTYPE",selectedOption)
+
+
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(content,intent,null)
 }
 
+
+// ANIMS
+@Composable
+fun AnimatedGreetingText(texto: String, textColor: Color) {
+    // State to control the animation trigger
+    var isVisible by remember { mutableStateOf(false) }
+
+    // Start animation when composable is first loaded
+    LaunchedEffect(Unit) {
+        isVisible = true
+    }
+
+    // Animate opacity (fade-in) and scale size
+    val alpha by animateFloatAsState(
+        targetValue = if (isVisible) 1f else 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(5000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = ""
+    )
+    val scale by animateFloatAsState(
+        targetValue = if (isVisible) 1f else 0.5f,
+        animationSpec = tween(durationMillis = 1000),
+        label = ""
+    )
+
+    Text(
+        text = texto,
+        fontSize = 24.sp,
+        fontFamily = FontFamily.Monospace,
+        color = textColor.copy(alpha = alpha),
+        modifier = Modifier.scale(scale).padding(bottom = 20.dp, top = 20.dp)
+    )
+
+}
 
 

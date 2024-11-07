@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.turisticappamov.myactivities.MenuActivity
 import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.screens.HomeScreen
@@ -37,7 +38,8 @@ fun AppNavigation(
     intent: Intent,
     content: Context,
     listaSettings: ArrayList<MutableState<Boolean>>,
-    lazyListState: LazyListState
+    lazyListState: LazyListState,
+    menuActivity: MenuActivity
 ){
     val navController:NavHostController = rememberNavController()
 
@@ -100,7 +102,7 @@ fun AppNavigation(
                 ProfileScreen(user,listFeedItems,lazyListState)
             }
             composable(route = Screens.SettingsScreen.name){
-                SettingsScreen(user,listaSettings)
+                SettingsScreen(user,listaSettings,menuActivity)
             }
         }
     }

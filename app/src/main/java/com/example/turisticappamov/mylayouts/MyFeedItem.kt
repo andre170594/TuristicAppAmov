@@ -50,7 +50,7 @@ fun MyFeedItem(feedIt: FeedItem) {
 
             // Content
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = feedIt.nameUser ?: "",
@@ -67,7 +67,7 @@ fun MyFeedItem(feedIt: FeedItem) {
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
-                    text = feedIt.content ?: "",
+                    text = (feedIt.content + "%"),
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
                     fontStyle = FontStyle.Italic,
@@ -106,6 +106,6 @@ fun MyFeedItem(feedIt: FeedItem) {
 @Preview
 @Composable
 fun TestItem() {
-    val feed = FeedItem("Achieved", "70%", 1234567890L, "Jaffar")
+    val feed = FeedItem("CIS-HR", "70", 1234567890L, "Jaffar")
     MyFeedItem(feedIt = feed)
 }

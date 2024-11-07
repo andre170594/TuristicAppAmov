@@ -26,14 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.turisticappamov.myactivities.ui.theme.TuristicAppAmovTheme
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.MyResultsOption
 import com.example.turisticappamov.mylayouts.RoundProgressBar
 import com.example.turisticappamov.mymodels.FeedItem
-import com.example.turisticappamov.mymodels.ParOptionsAnswers
 import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
 import com.google.firebase.Firebase
@@ -45,6 +43,7 @@ class ResultsActivity : ComponentActivity() {
 
     private var numCertas:Int = 10
     private var numTotal:Int = 10
+    private var testName:String = "default"
     private lateinit var listaErradas: ArrayList<Question>
     private lateinit var activeUser: User
 
@@ -56,6 +55,8 @@ class ResultsActivity : ComponentActivity() {
         numTotal = intent.getIntExtra("TOTALQ",0)
         listaErradas = intent.getSerializableExtra("WRONG_QUESTIONS") as ArrayList<Question>
         activeUser= (intent.getSerializableExtra("USER") as? User)!!
+        testName = intent.getStringExtra("TESTNAME").toString()
+
 
         val startColor = Color(0xFF44617E)
         val endColor = Color(0xFF373D37)
@@ -72,7 +73,9 @@ class ResultsActivity : ComponentActivity() {
                             listaErradas,
                             activeUser,
                             startColor,
-                            endColor,numTotal
+                            endColor,
+                            numTotal,
+                            testName,
                         )
                     }
                 }
@@ -95,7 +98,8 @@ fun ResultsLayout(
     activeUser: User,
     startColor: Color,
     endColor: Color,
-    ntotal:Int
+    ntotal: Int,
+    testName: String
 ) {
 
    Box( modifier = Modifier
@@ -148,7 +152,7 @@ fun ResultsLayout(
             onClick = {
                 // update Scores and Feed
                 updateScores(activeUser, getScorePercentage(numCertas,ntotal))
-                updateFeed("achieved",getScorePercentage(numCertas,ntotal).roundToInt().toString(),System.currentTimeMillis(),activeUser.username)
+                updateFeed(testName,getScorePercentage(numCertas,ntotal).roundToInt().toString(),System.currentTimeMillis(),activeUser)
                 // launch previous activity
                 val intent = Intent(context, MenuActivity::class.java)
                 intent.putExtra("USER", activeUser)
@@ -165,13 +169,20 @@ fun ResultsLayout(
    }
 }
 
-fun updateFeed(title: String, content: String, timestamp: Long, nameUser: String?) {
-    val firebaseDatabase = FirebaseDatabase.getInstance()
-    val databaseRef = firebaseDatabase.getReference("feeds")
-    val feedId = databaseRef.push().key
-    val newUFeed = FeedItem(title, content ,timestamp,nameUser)
-    if(feedId != null)
-        databaseRef.child(feedId).setValue(newUFeed)
+fun updateFeed(
+    title: String,
+    content: String,
+    timestamp: Long,
+    activeUser: User
+) {
+    if(activeUser.goFeed == true){
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseRef = firebaseDatabase.getReference("feeds")
+        val feedId = databaseRef.push().key
+        val newUFeed = FeedItem(title, content ,timestamp,activeUser.username)
+        if(feedId != null)
+            databaseRef.child(feedId).setValue(newUFeed)
+    }
 }
 
 fun updateScores(activeUser: User, scorePercentage: Double) {
