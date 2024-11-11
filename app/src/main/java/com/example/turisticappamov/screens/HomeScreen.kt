@@ -26,7 +26,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +46,8 @@ import androidx.core.content.ContextCompat.startActivity
 import com.example.turisticappamov.R
 import com.example.turisticappamov.mylayouts.RoundProgressBar
 import com.example.turisticappamov.mymodels.User
+import com.example.turisticappamov.ui.theme.*
+
 
 
 @Composable
@@ -55,23 +56,18 @@ fun HomeScreen(
     intent: Intent,
     content: Context
 ) {
-    // DARK MODE
-    var testDarkMode = false
-    var startColor = Color(0xFFCBD5A5)
-    var endColor = Color(0xFFF3E9D4)
-    var textColor = Color(0xFF617C63)
-    var widgetBackColor = Color(0xFFFEFAE8)
-    var btnColor = Color(0xFF4E6C50)
-    var btnTextColor = Color(0xFFDCE6DC)
-    if(user.goDark == true){
-        startColor = Color(0xFF111644)
-        endColor = Color(0xFF321B4F)
-        textColor = Color(0xFF9FA8DA)
-        widgetBackColor = Color(0xFF45256D)
-        btnColor = Color(0xFF81577C)
-        btnTextColor = Color(0xFFD7D0DB)
-        testDarkMode = true
-    }
+
+
+    // COLOR SCHEME
+    val startColor = if (user.goDark == false) LightStartColor else DarkStartColor
+    val endColor = if (user.goDark == false) LightEndColor else DarkEndColor
+    val btnColor = if (user.goDark == false) LightBtnColor else DarkBtnColor
+    val btnTextColor = if (user.goDark == false) LightBtnTextColor else DarkBtnTextColor
+    val widgetBackColor = if (user.goDark == false) LightWidgetBackColor else DarkWidgetBackColor
+    val textColor = if (user.goDark == false) LightTExtColor else DarkTExtColor
+    val testDarkMode = user.goDark != false
+
+
     // Option picker state
     var selectedOption by remember { mutableStateOf("CAD") }
     var expanded by remember { mutableStateOf(false) }

@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -43,26 +41,21 @@ import com.example.turisticappamov.R.drawable
 import com.example.turisticappamov.myactivities.MenuActivity
 import com.example.turisticappamov.mylayouts.MySettingsOpt
 import com.example.turisticappamov.mymodels.User
+import com.example.turisticappamov.ui.theme.*
+
 
 @Composable
 fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,menuActivity: MenuActivity) {
 
-    // DARK MODE
-    var startColor = Color(0xFFCBD5A5)
-    var endColor = Color(0xFFF3E9D4)
-    var cardColor = Color(0xFF4E6C50)
-    var btnColor = Color(0xFF4E6C50)
-    var btnTextColor = Color(0xFFEEF5EE)
-    var textColor = Color(0xFF617C63)
-    if(user.goDark == true){
-        startColor = Color(0xFF111644)
-        endColor = Color(0xFF321B4F)
-        cardColor = Color(0xFF321B4F)
-        btnColor = Color(0xFF81577C)
-        btnTextColor = Color(0xFFD7D0DB)
-        textColor = Color(0xFFD7D0DB)
-    }
-    
+
+    // COLOR SCHEME
+    val startColor = if (user.goDark == false) LightStartColor else DarkStartColor
+    val endColor = if (user.goDark == false) LightEndColor else DarkEndColor
+    val btnColor = if (user.goDark == false) LightBtnColor else DarkBtnColor
+    val btnTextColor = if (user.goDark == false) LightBtnTextColor else DarkBtnTextColor
+    val cardColor = if (user.goDark == false) LightCardColor else DarkCardColor
+    val textColor = if (user.goDark == false) LightTExtColor else DarkTExtColor
+
     
     // PREPARE OPTS TO BE DISPLAYED
     val opt1 = "Dark Mode"
@@ -185,5 +178,3 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
     }
      menuActivity.finishAffinity()
 }
-
-

@@ -99,7 +99,7 @@ fun AppNavigation(
                 HomeScreen(user,intent,content)
             }
             composable(route = Screens.ProfileScreen.name){
-                ProfileScreen(user,listFeedItems,lazyListState)
+                ProfileScreen(user,listFeedItems)
             }
             composable(route = Screens.SettingsScreen.name){
                 SettingsScreen(user,listaSettings,menuActivity)

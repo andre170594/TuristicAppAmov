@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -24,17 +23,17 @@ import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.mylayouts.MyFeedItem
 import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.User
+import com.example.turisticappamov.ui.theme.DarkEndColor
+import com.example.turisticappamov.ui.theme.DarkStartColor
+import com.example.turisticappamov.ui.theme.LightEndColor
+import com.example.turisticappamov.ui.theme.LightStartColor
 
 @Composable
-fun ProfileScreen(user: User, listFeedItems: ArrayList<FeedItem>?, lazyListState: LazyListState){
+fun ProfileScreen(user: User, listFeedItems: ArrayList<FeedItem>?){
 
-    // DARK MODE
-    var startColor = Color(0xFFCBD5A5)
-    var endColor = Color(0xFFF3E9D4)
-    if(user.goDark == true){
-        startColor = Color(0xFF111644)
-        endColor = Color(0xFF321B4F)
-    }
+    // COLOR SCHEME
+    val startColor = if (user.goDark == false) LightStartColor else DarkStartColor
+    val endColor = if (user.goDark == false) LightEndColor else DarkEndColor
 
     Column(
         modifier = Modifier

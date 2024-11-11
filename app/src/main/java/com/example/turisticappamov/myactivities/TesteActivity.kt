@@ -5,6 +5,7 @@ import android.content.Intent
 import com.example.turisticappamov.mylayouts.MyOption
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.ProgressBarNavigation
+import com.example.turisticappamov.ui.theme.*
 import com.example.turisticappamov.ui.theme.TuristicAppAmovTheme
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -63,9 +65,7 @@ class TesteActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         goFullScreen()
 
-        val goDark = intent.getBooleanExtra("GoDARK",false)
         val testType = intent.getStringExtra("TESTTYPE")
-
 
         initGame {
             setContent {
@@ -84,8 +84,7 @@ class TesteActivity : ComponentActivity() {
                             onBack = { goBack() },
                             onForward = { goForward() },
                             LocalContext.current,
-                            goDark,
-                            testType!!,
+                            testType!!
                         )
                     }
                 }
@@ -186,22 +185,14 @@ fun TestLayout(
     onGlobalSelectedCountChange: (Int) -> Unit,
     onBack: () -> Unit,
     onForward: () -> Unit, context: Context,
-    goDark: Boolean,
     testType: String,
     ) {
 
-
-    // DARK MODE
-    var startColor = Color(0xFFCBD5A5)
-    var endColor = Color(0xFFF3E9D4)
-    var btnColor = Color(0xFF4E6C50)
-    var btnTextColor = Color(0xFFDCE6DC)
-    if(goDark){
-        startColor = Color(0xFF111644)
-        endColor = Color(0xFF321B4F)
-        btnColor = Color(0xFF815E7D)
-        btnTextColor = Color(0xFFD7D0DB)
-    }
+    // COLOR SCHEME
+    val startColor = if (activeUser.goDark == false) LightStartColor else DarkStartColor
+    val endColor = if (activeUser.goDark == false) LightEndColor else DarkEndColor
+    val btnColor = if (activeUser.goDark == false) LightBtnColor else DarkBtnColor
+    val btnTextColor = if (activeUser.goDark == false) LightBtnTextColor else DarkBtnTextColor
 
     Box(
         modifier = Modifier
@@ -270,24 +261,33 @@ fun submitAnswers(
     context: Context,
     testName: String,
 ) {
-    // get wrong questions
-    val wrongQuestions = getWrongQuestions(listaQuestions)
-    val numCertas = listaQuestions.size - wrongQuestions.size
+    val numNotAnswered = getNotAnswered(listaQuestions)
+    if(numNotAnswered == 0){
+        // get wrong questions
+        val wrongQuestions = getWrongQuestions(listaQuestions)
+        val numCertas = listaQuestions.size - wrongQuestions.size
 
-
-
-    val intent = Intent(context, ResultsActivity::class.java)
-    intent.putExtra("WRONG_QUESTIONS", wrongQuestions)
-    intent.putExtra("NUM_CERTAS", numCertas)
-    intent.putExtra("TOTALQ", listaQuestions.size)
-    intent.putExtra("USER", activeUser)
-    intent.putExtra("TESTNAME",testName)
-    context.startActivity(intent)
-
+        val intent = Intent(context, ResultsActivity::class.java)
+        intent.putExtra("WRONG_QUESTIONS", wrongQuestions)
+        intent.putExtra("NUM_CERTAS", numCertas)
+        intent.putExtra("TOTALQ", listaQuestions.size)
+        intent.putExtra("USER", activeUser)
+        intent.putExtra("TESTNAME",testName)
+        context.startActivity(intent)
+    }else
+        Toast.makeText(context, "$numNotAnswered questions without answer", Toast.LENGTH_SHORT).show()
+    // maybe later display something with all the questions that need to mbe answered
+}
+fun getNotAnswered(listaQuestions: ArrayList<Question>): Int {
+    var numQuestions = 0
+    for(question in listaQuestions){
+        if(unansweredQuestion(question.listOpt))
+            numQuestions++
+    }
+   return numQuestions
 }
 fun getWrongQuestions(listaQuestions: ArrayList<Question>): ArrayList<Question> {
     val wrongQuestions = ArrayList<Question>()
-
     for (question in listaQuestions) {
         // Check if all selected options are correct
         if (!areAllOptionsCorrect(question.listOpt)) {
@@ -295,6 +295,17 @@ fun getWrongQuestions(listaQuestions: ArrayList<Question>): ArrayList<Question> 
         }
     }
     return wrongQuestions
+}
+fun unansweredQuestion(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
+    listOpt?.let {
+        for (option in it) {
+            // Check if the selected option is correct
+            if (option.selected == true) {
+                return false
+            }
+        }
+    }
+    return true
 }
 fun areAllOptionsCorrect(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
     listOpt?.let {

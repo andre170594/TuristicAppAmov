@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,6 +35,8 @@ import com.example.turisticappamov.mylayouts.RoundProgressBar
 import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
+import com.example.turisticappamov.ui.theme.*
+
 import com.google.firebase.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
@@ -58,9 +61,6 @@ class ResultsActivity : ComponentActivity() {
         testName = intent.getStringExtra("TESTNAME").toString()
 
 
-        val startColor = Color(0xFF44617E)
-        val endColor = Color(0xFF373D37)
-
         setContent {
             TuristicAppAmovTheme {
                     Surface(
@@ -72,8 +72,6 @@ class ResultsActivity : ComponentActivity() {
                             numCertas,
                             listaErradas,
                             activeUser,
-                            startColor,
-                            endColor,
                             numTotal,
                             testName,
                         )
@@ -96,11 +94,15 @@ fun ResultsLayout(
     numCertas: Int,
     listaErradas: ArrayList<Question>,
     activeUser: User,
-    startColor: Color,
-    endColor: Color,
     ntotal: Int,
     testName: String
 ) {
+
+    // COLOR SCHEME
+    val startColor = if (activeUser.goDark == false) LightStartColor else DarkStartColor
+    val endColor = if (activeUser.goDark == false) LightEndColor else DarkEndColor
+    val btnColor = if (activeUser.goDark == false) LightBtnColor else DarkBtnColor
+    val btnTextColor = if (activeUser.goDark == false) LightBtnTextColor else DarkBtnTextColor
 
    Box( modifier = Modifier
        .fillMaxSize()
@@ -161,7 +163,8 @@ fun ResultsLayout(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
+                .padding(top = 8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = btnColor, contentColor = btnTextColor)
         ) {
             Text(text = "Main menu")
         }
