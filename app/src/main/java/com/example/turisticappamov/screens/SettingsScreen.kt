@@ -22,6 +22,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -69,6 +74,13 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
     listaOps.add(opt3)
     // END PREPARE OPTS TO BE DISPLAYED
 
+    // CHANGE USER IMAGE
+
+    // Change number of questions per exam
+    var numQuestionsExam by remember { mutableIntStateOf(50) }
+
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,7 +117,7 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
                     .padding(top = 8.dp)
             )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { },
+        Button(onClick = {},
             modifier = Modifier
                 .padding(vertical = 2.dp, horizontal = 2.dp)
                 .size(width = 180.dp, height = 38.dp)
