@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
@@ -106,9 +105,7 @@ class MenuActivity : ComponentActivity() {
                         val userRef = usersRef.child(activeUser.userID.toString())
                         userRef.child("goFeed").setValue(activeUser.goFeed)
                     }
-
-                    val lazyListState = rememberLazyListState()
-                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,lazyListState,this@MenuActivity)
+                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,this@MenuActivity)
                 }
             }
         }

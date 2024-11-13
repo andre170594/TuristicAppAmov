@@ -23,10 +23,8 @@ import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.mylayouts.MyFeedItem
 import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.User
-import com.example.turisticappamov.ui.theme.DarkEndColor
-import com.example.turisticappamov.ui.theme.DarkStartColor
-import com.example.turisticappamov.ui.theme.LightEndColor
-import com.example.turisticappamov.ui.theme.LightStartColor
+import com.example.turisticappamov.ui.theme.*
+
 
 @Composable
 fun ProfileScreen(user: User, listFeedItems: ArrayList<FeedItem>?){
@@ -34,6 +32,8 @@ fun ProfileScreen(user: User, listFeedItems: ArrayList<FeedItem>?){
     // COLOR SCHEME
     val startColor = if (user.goDark == false) LightStartColor else DarkStartColor
     val endColor = if (user.goDark == false) LightEndColor else DarkEndColor
+    val cardBackColor = if (user.goDark == false) LightFeedColor else DarkFeedColor
+    val textColor = if (user.goDark == false) LightTExtColor else DarkTExtColor
 
     Column(
         modifier = Modifier
@@ -44,14 +44,13 @@ fun ProfileScreen(user: User, listFeedItems: ArrayList<FeedItem>?){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
         Spacer(modifier = Modifier.height(35.dp))
 
         Text(
             text = "Feed",
             fontFamily = FontFamily.Serif,
             fontSize = 24.sp,
-            color = Color.White
+            color = textColor
         )
         Spacer(modifier = Modifier.height(66.dp))
 
@@ -64,10 +63,10 @@ fun ProfileScreen(user: User, listFeedItems: ArrayList<FeedItem>?){
             if(listFeedItems!=null) {
 
                 listFeedItems.sortBy { it.timestamp }
+                listFeedItems.reverse()
                 itemsIndexed(listFeedItems) { index, feedIt ->
-                    // Wrong Question
 
-                    MyFeedItem(feedIt)
+                    MyFeedItem(feedIt,cardBackColor)
                     Divider(
                         color = Color.Transparent,
                         thickness = 1.dp,

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -22,13 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForward: () -> Unit,textColor: Color,backgroundColor: Color) {
     val progress = (1 + current.toFloat()) / total.toFloat()
-    val colorBox = Color(0x8068598A)
 
     Box(
         modifier = Modifier
@@ -46,7 +44,7 @@ fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForwar
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             IconButton(onClick = { onBack() }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back", tint = textColor)
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = textColor)
             }
 
             Box(
@@ -78,7 +76,7 @@ fun ProgressBarNavigation(current: Int, total: Int, onBack: () -> Unit, onForwar
             }
 
             IconButton(onClick = { onForward() }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Forward", tint = textColor)
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Forward", tint = textColor)
             }
         }
     }

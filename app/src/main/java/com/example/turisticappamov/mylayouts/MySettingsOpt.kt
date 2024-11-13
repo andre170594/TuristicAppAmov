@@ -67,7 +67,6 @@ fun MySettingsOpt(text: String, icon: ImageVector, settingState: MutableState<Bo
                     uncheckedTrackColor = Color(0xFFFFFFFF),
                     uncheckedIconColor = Color(0xFF3C2C5C)
                 )
-
             )
         }
     }

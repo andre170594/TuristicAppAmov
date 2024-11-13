@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -124,6 +126,7 @@ class MainActivity : ComponentActivity() {
                     )
                 )
                 .padding(24.dp)
+                .verticalScroll(rememberScrollState())
             ,verticalArrangement = Arrangement.Center
             , horizontalAlignment = Alignment.CenterHorizontally
 
@@ -233,44 +236,30 @@ class MainActivity : ComponentActivity() {
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            // Username already exists, show error message
                             Toast.makeText(this@MainActivity, "Username already exists", Toast.LENGTH_SHORT).show()
                         } else {
-                            // Username is unique, proceed with user creation
-
-                            // Generate a unique key for the new user
                             val userId = databaseRef.push().key
-
-                            // Check if the userId is not null
                             if (userId != null) {
-                                // Create a new user object
                                 val newUser = User(userId,username, password,null,null,false,true)
-                                // Insert the new user into the database under the generated userId
                                 databaseRef.child(userId).setValue(newUser)
                                     .addOnSuccessListener {
-                                        // User creation successful
                                         Toast.makeText(this@MainActivity, "User created successfully", Toast.LENGTH_SHORT).show()
                                         createAccount.value = false
                                     }
                                     .addOnFailureListener {
-                                        // User creation failed
                                         Toast.makeText(this@MainActivity, "Failed to create user", Toast.LENGTH_SHORT).show()
                                     }
                             }
                         }
                     }
-
                     override fun onCancelled(databaseError: DatabaseError) {
-                        // Error occurred while querying the database
                         Toast.makeText(this@MainActivity, "Database error: ${databaseError.message}", Toast.LENGTH_SHORT).show()
                     }
                 })
         } else {
-            // Username or password is empty, show error message
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     // LOGIN
     @OptIn(ExperimentalMaterial3Api::class)
@@ -294,6 +283,7 @@ class MainActivity : ComponentActivity() {
                     )
                 )
                 .padding(24.dp)
+                .verticalScroll(rememberScrollState())
             ,verticalArrangement = Arrangement.Center
             , horizontalAlignment = Alignment.CenterHorizontally
 
@@ -311,9 +301,8 @@ class MainActivity : ComponentActivity() {
               text = "Devs on Tour",
               fontFamily = FontFamily.Monospace,
               modifier = Modifier
-                  .padding(bottom = 80.dp, top = 20.dp)
+                  .padding(bottom = 80.dp, top = 30.dp)
           )
-
           Text(
               text = "LOGIN",
               modifier = Modifier
@@ -328,7 +317,6 @@ class MainActivity : ComponentActivity() {
               fontSize = 20.sp,
               fontFamily = FontFamily.Monospace
           )
-
           TextField(
               value = userName,
               onValueChange = { userName = it },
@@ -340,7 +328,6 @@ class MainActivity : ComponentActivity() {
               colors = TextFieldDefaults.textFieldColors(
                   containerColor = transparency
               ), leadingIcon = {
-                  // Add your icon here
                   Icon(
                       imageVector = Icons.Default.Person,contentDescription = "login"
                   )
@@ -410,7 +397,7 @@ class MainActivity : ComponentActivity() {
                 databaseRef
             ) { exists ->
                 if (exists) {
-                    saveCredentials(userName, password) // Save credentials
+                    saveCredentials(userName, password)
                     val intent = Intent(this@MainActivity, MenuActivity::class.java)
                     intent.putExtra("USER",activeUser)
                     startActivity(intent)
@@ -452,7 +439,6 @@ class MainActivity : ComponentActivity() {
                 }
             })
     }
-
     private fun goFullScreen() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -467,6 +453,4 @@ class MainActivity : ComponentActivity() {
             apply()
         }
     }
-
-
 }

@@ -36,7 +36,6 @@ import com.example.turisticappamov.mymodels.FeedItem
 import com.example.turisticappamov.mymodels.Question
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.ui.theme.*
-
 import com.google.firebase.Firebase
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
@@ -59,7 +58,6 @@ class ResultsActivity : ComponentActivity() {
         listaErradas = intent.getSerializableExtra("WRONG_QUESTIONS") as ArrayList<Question>
         activeUser= (intent.getSerializableExtra("USER") as? User)!!
         testName = intent.getStringExtra("TESTNAME").toString()
-
 
         setContent {
             TuristicAppAmovTheme {

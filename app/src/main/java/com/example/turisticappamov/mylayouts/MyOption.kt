@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.mymodels.ParOptionsAnswers
@@ -29,7 +28,6 @@ fun MyOption(
     onGlobalSelectedCountChange: (Int) -> Unit
 ) {
 
-
     val colorSelected = Color(0xE9563B5C)
     val colorNotSelected = Color(0xEBA699AF)
 
@@ -41,11 +39,9 @@ fun MyOption(
         Button(
             onClick = {
                 if (opt.selected == true) {
-                    // If the option is already selected, deselect it
                     opt.selected = false
                     onGlobalSelectedCountChange(globalSelectedCount - 1)
                 } else if (globalSelectedCount < numCorrect) {
-                    // If the maximum number of options is not reached, select the option
                     opt.selected = true
                     onGlobalSelectedCountChange(globalSelectedCount + 1)
                 }
@@ -73,11 +69,4 @@ fun MyOption(
             )
         }
     }
-}
-@Preview
-@Composable
-fun Tested() {
-
-    val par = ParOptionsAnswers("isto é uma resposta",false,false)
-    MyOption(par,1,1,{})
 }

@@ -22,10 +22,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,7 +43,6 @@ import com.example.turisticappamov.ui.theme.*
 @Composable
 fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,menuActivity: MenuActivity) {
 
-
     // COLOR SCHEME
     val startColor = if (user.goDark == false) LightStartColor else DarkStartColor
     val endColor = if (user.goDark == false) LightEndColor else DarkEndColor
@@ -56,7 +51,6 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
     val cardColor = if (user.goDark == false) LightCardColor else DarkCardColor
     val textColor = if (user.goDark == false) LightTExtColor else DarkTExtColor
 
-    
     // PREPARE OPTS TO BE DISPLAYED
     val opt1 = "Dark Mode"
     val opt2 = "Notification"
@@ -70,7 +64,7 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
     // CHANGE USER IMAGE
 
     // Change number of questions per exam
-    var numQuestionsExam by remember { mutableIntStateOf(50) }
+  //  var numQuestionsExam by remember { mutableIntStateOf(50) }
 
 
 
@@ -165,8 +159,6 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
             )
         }
         Spacer(modifier = Modifier.height(6.dp))
-
-
     }
 }
 

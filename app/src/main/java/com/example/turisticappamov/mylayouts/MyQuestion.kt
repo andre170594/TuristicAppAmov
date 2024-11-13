@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.turisticappamov.mymodels.Question
@@ -50,13 +49,13 @@ fun MyQuestion(listaQuestions: ArrayList<Question>, prog: Int) {
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
-                        fontStyle = FontStyle(1),
+                        fontStyle = FontStyle.Normal,
                         fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center
                     )
                 }
             } else {
                 Text(
-                    text = "failed: ${listaQuestions.size}",
+                    text = "failed",
                     modifier = Modifier.padding(30.dp),
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
@@ -65,14 +64,4 @@ fun MyQuestion(listaQuestions: ArrayList<Question>, prog: Int) {
             }
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun MyQuestionPrev() {
-
-    var listQuest = ArrayList<Question>()
-    listQuest.add(Question("Isto é uma pergunta exemplo"))
-    MyQuestion(listaQuestions = listQuest, prog =0 )
 }

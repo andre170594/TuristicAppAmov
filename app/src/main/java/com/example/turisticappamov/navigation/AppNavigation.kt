@@ -2,9 +2,11 @@ package com.example.turisticappamov.navigation
 
 import android.content.Context
 import android.content.Intent
-
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -15,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -29,6 +30,7 @@ import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.screens.HomeScreen
 import com.example.turisticappamov.screens.ProfileScreen
 import com.example.turisticappamov.screens.SettingsScreen
+import com.example.turisticappamov.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,21 +40,13 @@ fun AppNavigation(
     intent: Intent,
     content: Context,
     listaSettings: ArrayList<MutableState<Boolean>>,
-    lazyListState: LazyListState,
     menuActivity: MenuActivity
 ){
     val navController:NavHostController = rememberNavController()
 
-    // TODO
-    // rest of the color of navBar
-    var navBarTextColor = Color(0xFFE2E7EB)
-    var navBarIconColor = Color(0xFF52534D)
-    var navBarColor = Color(0xFF4E6C50)
-    if(user.goDark==true){
-        navBarColor = Color(0xFF111644)
-        navBarTextColor = Color(0xFFCAD7DF)
-        navBarIconColor = Color(0xFFCE93D8)
-    }
+    val navBarTextColor = if (user.goDark == false) LightNavbarTextColor else DarkNavbarTextColor
+    val navBarIconColor = if (user.goDark == false) LightNavbarIconColor else DarkNavbarIconColor
+    val navBarColor = if (user.goDark == false) LightNavbarColor else DarkNavbarColor
 
     Scaffold(
         bottomBar = {
@@ -77,7 +71,8 @@ fun AppNavigation(
                         icon = {
                             Icon(
                                 imageVector = navItem.icon ,
-                                contentDescription = null, tint = navBarIconColor
+                                contentDescription = null,
+                                tint = navBarIconColor
                             )
                         },
                         label = {
@@ -91,8 +86,19 @@ fun AppNavigation(
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name,
-            modifier = Modifier
-                .padding(it)
+            modifier = Modifier.padding(it),
+            enterTransition = {
+                scaleIn(initialScale = 0.8f) + fadeIn()
+            },
+            exitTransition = {
+                scaleOut(targetScale = 1.2f) + fadeOut()
+            },
+            popEnterTransition = {
+                scaleIn(initialScale = 0.8f) + fadeIn()
+            },
+            popExitTransition = {
+                scaleOut(targetScale = 1.2f) + fadeOut()
+            }
 
         ){
             composable(route = Screens.HomeScreen.name){

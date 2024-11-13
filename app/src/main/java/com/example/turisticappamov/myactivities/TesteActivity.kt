@@ -229,7 +229,7 @@ fun TestLayout(
                 ) { newCount -> onGlobalSelectedCountChange(newCount) }
             }
 
-            // Conditional Submit Button at the end
+            // Conditional Submit Button
             if (prog == listaQuestions.size - 1) {
                 item {
                     Button(
@@ -261,6 +261,7 @@ fun submitAnswers(
     context: Context,
     testName: String,
 ) {
+
     val numNotAnswered = getNotAnswered(listaQuestions)
     if(numNotAnswered == 0){
         // get wrong questions
@@ -321,5 +322,3 @@ fun areAllOptionsCorrect(listOpt: ArrayList<ParOptionsAnswers>?): Boolean {
     }
     return false
 }
-
-

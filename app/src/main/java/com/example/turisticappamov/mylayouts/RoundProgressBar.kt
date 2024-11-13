@@ -28,7 +28,6 @@ fun RoundProgressBar(percentage: Double, modifier: Modifier = Modifier,textColor
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            val outerRadius = size.minDimension / 2
             val strokeWidth = 20f
             // Draw the background circle
             drawArc(

@@ -49,14 +49,12 @@ import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.ui.theme.*
 
 
-
 @Composable
 fun HomeScreen(
     user: User,
     intent: Intent,
     content: Context
 ) {
-
 
     // COLOR SCHEME
     val startColor = if (user.goDark == false) LightStartColor else DarkStartColor
@@ -67,12 +65,10 @@ fun HomeScreen(
     val textColor = if (user.goDark == false) LightTExtColor else DarkTExtColor
     val testDarkMode = user.goDark != false
 
-
     // Option picker state
     var selectedOption by remember { mutableStateOf("CAD") }
     var expanded by remember { mutableStateOf(false) }
     val options = listOf("CAD", "CSA", "CIS-HR")
-
 
     Column(
         modifier = Modifier
@@ -97,11 +93,7 @@ fun HomeScreen(
           modifier = Modifier.padding(bottom = 10.dp, top = 20.dp), fontFamily = FontFamily.Monospace, color = textColor
       )
 
-
-
-      //  AnimatedGreetingText("Devs on Tour",textColor)
         AnimatedGreetingText("Hi " + user.username.toString(),textColor)
-
 
         // 1Row
         Row(
@@ -171,8 +163,6 @@ fun HomeScreen(
                 }
             }
         }
-
-
 
         // Option Picker Dropdown
         Text(
@@ -250,9 +240,8 @@ fun startTest(
     intent.putExtra("USER",user)
     intent.putExtra("GoDARK",testDarkMode)
     intent.putExtra("TESTTYPE",selectedOption)
-
-
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
     startActivity(content,intent,null)
 }
 
@@ -268,7 +257,6 @@ fun AnimatedGreetingText(texto: String, textColor: Color) {
         isVisible = true
     }
 
-    // Animate opacity (fade-in) and scale size
     val alpha by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
         animationSpec = infiniteRepeatable(
@@ -282,7 +270,6 @@ fun AnimatedGreetingText(texto: String, textColor: Color) {
         animationSpec = tween(durationMillis = 1000),
         label = ""
     )
-
     Text(
         text = texto,
         fontSize = 24.sp,
