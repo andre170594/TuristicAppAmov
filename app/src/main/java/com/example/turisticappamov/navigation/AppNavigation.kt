@@ -40,7 +40,8 @@ fun AppNavigation(
     intent: Intent,
     content: Context,
     listaSettings: ArrayList<MutableState<Boolean>>,
-    menuActivity: MenuActivity
+    menuActivity: MenuActivity,
+    listNumQuestionExam: ArrayList<Int>
 ){
     val navController:NavHostController = rememberNavController()
 
@@ -105,7 +106,7 @@ fun AppNavigation(
                 HomeScreen(user,intent,content)
             }
             composable(route = Screens.ProfileScreen.name){
-                ProfileScreen(user,listFeedItems)
+                ProfileScreen(user,listFeedItems,listNumQuestionExam)
             }
             composable(route = Screens.SettingsScreen.name){
                 SettingsScreen(user,listaSettings,menuActivity)

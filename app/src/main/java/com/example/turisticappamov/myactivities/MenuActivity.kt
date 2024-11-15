@@ -26,6 +26,8 @@ class MenuActivity : ComponentActivity() {
 
     private lateinit var activeUser: User
     private lateinit var liveFeed: ArrayList<FeedItem>
+    private lateinit var listNumQuestionExam: MutableList<Int>
+    private lateinit var listNumQuestionExamRef: DatabaseReference
     private lateinit var database: FirebaseDatabase
     private lateinit var feedsRef: DatabaseReference
     private var optNightMode = mutableStateOf(false)
@@ -69,6 +71,20 @@ class MenuActivity : ComponentActivity() {
                 println("Failed to retrieve feed: ${e.message}")
             }
 
+            // obtain NumQuestionPerExam
+            listNumQuestionExam = ArrayList()
+                try {
+                    database = FirebaseDatabase.getInstance()
+                    listNumQuestionExamRef = database.getReference("examNumQ")
+                    val dataSnapshot = listNumQuestionExamRef.get().await()
+                    listNumQuestionExam = dataSnapshot.children.map {
+                        it.getValue(Int::class.java) ?: 0
+                    }.toMutableList()
+                } catch (e: Exception) {
+                    println("Failed to retrieve question numbers: ${e.message}")
+                }
+
+
             // track options in settings screen
             listaSettingsOpts = ArrayList()
             optNightMode.value = activeUser.goDark ?: false
@@ -105,7 +121,9 @@ class MenuActivity : ComponentActivity() {
                         val userRef = usersRef.child(activeUser.userID.toString())
                         userRef.child("goFeed").setValue(activeUser.goFeed)
                     }
-                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,this@MenuActivity)
+                    AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,this@MenuActivity,
+                        listNumQuestionExam as ArrayList<Int>
+                    )
                 }
             }
         }

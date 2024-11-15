@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
                 painter = painterResource(id= R.drawable.logo),
                 contentDescription = "Logo",
                 modifier = Modifier
-                    .scale(3.0f)
+                    .scale(2.0f)
                     .padding(top = 2.dp, bottom = 6.dp)
                     .fillMaxWidth()
             )
@@ -293,7 +293,7 @@ class MainActivity : ComponentActivity() {
               painter = painterResource(id= R.drawable.logo),
               contentDescription = "Logo",
               modifier = Modifier
-                  .scale(3.0f)
+                  .scale(2.0f)
                   .padding(top = 2.dp, bottom = 6.dp)
                   .fillMaxWidth()
           )

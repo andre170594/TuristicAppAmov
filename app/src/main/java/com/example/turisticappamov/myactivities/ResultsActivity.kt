@@ -138,6 +138,10 @@ fun ResultsLayout(
                     question.listOpt?.forEach {
                         MyResultsOption(opt = it)
                     }
+
+                    // display explanation
+
+
                 }
             }
         } else {

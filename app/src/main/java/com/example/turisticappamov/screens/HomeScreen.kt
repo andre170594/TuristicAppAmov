@@ -66,9 +66,9 @@ fun HomeScreen(
     val testDarkMode = user.goDark != false
 
     // Option picker state
-    var selectedOption by remember { mutableStateOf("CAD") }
+    var selectedOption by remember { mutableStateOf("CSA") }
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf("CAD", "CSA", "CIS-HR")
+    val options = listOf("CAD", "CSA", "CIS-HR","CIS-PMM","ITSM")
 
     Column(
         modifier = Modifier
