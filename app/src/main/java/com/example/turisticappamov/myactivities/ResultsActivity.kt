@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.turisticappamov.myactivities.ui.theme.TuristicAppAmovTheme
+import com.example.turisticappamov.mylayouts.MyExplanation
 import com.example.turisticappamov.mylayouts.MyQuestion
 import com.example.turisticappamov.mylayouts.MyResultsOption
 import com.example.turisticappamov.mylayouts.RoundProgressBar
@@ -119,7 +120,8 @@ fun ResultsLayout(
             percentage = getScorePercentage(numCertas, ntotal),
             modifier = Modifier
                 .size(150.dp)
-                .padding(8.dp).fillMaxSize(), Color.Black)
+                .padding(8.dp)
+                .fillMaxSize(), Color.Black)
 
         // Display List of Wrong Questions
         if (listaErradas.isNotEmpty()) {
@@ -131,7 +133,9 @@ fun ResultsLayout(
             ) {
                 itemsIndexed(listaErradas) { index, question ->
                     // Wrong Question
-                    Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.fillMaxWidth().padding(top = 10.dp))
+                    Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp))
                     MyQuestion(listaQuestions = listaErradas , index)
 
                     // Wrong Options
@@ -140,7 +144,7 @@ fun ResultsLayout(
                     }
 
                     // display explanation
-
+                    question.explanation?.let { MyExplanation(it) }
 
                 }
             }
