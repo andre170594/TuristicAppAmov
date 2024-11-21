@@ -73,16 +73,16 @@ class MenuActivity : ComponentActivity() {
 
             // obtain NumQuestionPerExam
             listNumQuestionExam = ArrayList()
-                try {
-                    database = FirebaseDatabase.getInstance()
-                    listNumQuestionExamRef = database.getReference("examNumQ")
-                    val dataSnapshot = listNumQuestionExamRef.get().await()
-                    listNumQuestionExam = dataSnapshot.children.map {
-                        it.getValue(Int::class.java) ?: 0
-                    }.toMutableList()
-                } catch (e: Exception) {
-                    println("Failed to retrieve question numbers: ${e.message}")
-                }
+            try {
+                database = FirebaseDatabase.getInstance()
+                listNumQuestionExamRef = database.getReference("examNumQ")
+                val dataSnapshot = listNumQuestionExamRef.get().await()
+                listNumQuestionExam = dataSnapshot.children.map {
+                    it.getValue(Int::class.java) ?: 0
+                }.toMutableList()
+            } catch (e: Exception) {
+                println("Failed to retrieve question numbers: ${e.message}")
+            }
 
 
             // track options in settings screen

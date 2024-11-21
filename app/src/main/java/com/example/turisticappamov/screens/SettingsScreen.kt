@@ -1,5 +1,6 @@
 package com.example.turisticappamov.screens
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +39,8 @@ import com.example.turisticappamov.myactivities.MenuActivity
 import com.example.turisticappamov.mylayouts.MySettingsOpt
 import com.example.turisticappamov.mymodels.User
 import com.example.turisticappamov.ui.theme.*
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
 
 @Composable
@@ -140,10 +143,30 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
         }
         Spacer(modifier = Modifier.height(6.dp))
 
+        Button(onClick = { resetScores(user,menuActivity)},
+            modifier = Modifier
+                .padding(vertical = 2.dp, horizontal = 2.dp)
+                .size(width = 200.dp, height = 38.dp)
+                .clipToBounds(),
+            colors = ButtonDefaults.buttonColors(btnColor),
+            shape = RoundedCornerShape(100.dp),
+        ) {
+            Text(
+                text = "Reset Scores",
+                color = btnTextColor,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 2.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 14.sp
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+
         Button(onClick = { clearCredentials(menuActivity)},
             modifier = Modifier
                 .padding(vertical = 2.dp, horizontal = 2.dp)
-                .size(width = 180.dp, height = 38.dp)
+                .size(width = 200.dp, height = 38.dp)
                 .clipToBounds(),
             colors = ButtonDefaults.buttonColors(btnColor),
             shape = RoundedCornerShape(100.dp),
@@ -162,7 +185,22 @@ fun SettingsScreen(user:User,listaSettings: ArrayList<MutableState<Boolean>>,men
     }
 }
 
- fun clearCredentials(menuActivity: MenuActivity) {
+
+fun resetScores(user: User, menuActivity: MenuActivity) {
+
+    user.avgScores = ArrayList()
+    user.lastScore = 0.0
+    val usersRef = Firebase.database.reference.child("users")
+    val userRef = usersRef.child(user.userID.toString())
+    userRef.child("avgScores").setValue(user.avgScores)
+    userRef.child("lastScore").setValue(user.lastScore)
+
+    Toast.makeText(menuActivity, "Scores Reset successfully", Toast.LENGTH_SHORT).show()
+
+
+}
+
+fun clearCredentials(menuActivity: MenuActivity) {
     val sharedPref = menuActivity.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     with(sharedPref.edit()) {
         clear()
