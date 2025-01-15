@@ -223,7 +223,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
     // CREATE NEW USER
     private fun createNewUser(username: String, password: String) {
         val firebaseDatabase = FirebaseDatabase.getInstance()
@@ -398,6 +397,7 @@ class MainActivity : ComponentActivity() {
             ) { exists ->
                 if (exists) {
                     saveCredentials(userName, password)
+
                     val intent = Intent(this@MainActivity, MenuActivity::class.java)
                     intent.putExtra("USER",activeUser)
                     startActivity(intent)

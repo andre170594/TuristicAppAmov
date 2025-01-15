@@ -53,7 +53,8 @@ import com.example.turisticappamov.ui.theme.*
 fun HomeScreen(
     user: User,
     intent: Intent,
-    content: Context
+    content: Context,
+    listAvailableExams: ArrayList<String>
 ) {
 
     // COLOR SCHEME
@@ -68,7 +69,6 @@ fun HomeScreen(
     // Option picker state
     var selectedOption by remember { mutableStateOf("CSA") }
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf("CAD", "CSA", "CIS-HR","CIS-PMM","ITSM")
 
     Column(
         modifier = Modifier
@@ -185,7 +185,7 @@ fun HomeScreen(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEach {option -> 
+                listAvailableExams.forEach {option ->
                     DropdownMenuItem(modifier = Modifier.background(widgetBackColor),
                         text = { Text(text = option, color = textColor)},
                         onClick = {

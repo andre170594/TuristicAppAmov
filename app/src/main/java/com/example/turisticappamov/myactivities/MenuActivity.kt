@@ -34,6 +34,7 @@ class MenuActivity : ComponentActivity() {
     private var optNotificationsOn = mutableStateOf(true)
     private var optShowFeed = mutableStateOf(true)
     private lateinit var listaSettingsOpts: ArrayList<MutableState<Boolean>>
+    private lateinit var listAvailableExams: MutableList<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +85,17 @@ class MenuActivity : ComponentActivity() {
                 println("Failed to retrieve question numbers: ${e.message}")
             }
 
+            // Obtain available exam names
+            try {
+                val examNamesSnapshot = listNumQuestionExamRef.get().await()
+                listAvailableExams = examNamesSnapshot.children.mapNotNull {
+                    it.key // Get the key (exam name)
+                }.toMutableList()
+
+            } catch (e: Exception) {
+                println("Failed to retrieve exam names: ${e.message}")
+            }
+
 
             // track options in settings screen
             listaSettingsOpts = ArrayList()
@@ -122,7 +134,7 @@ class MenuActivity : ComponentActivity() {
                         userRef.child("goFeed").setValue(activeUser.goFeed)
                     }
                     AppNavigation(activeUser, liveFeed, intent, content,listaSettingsOpts,this@MenuActivity,
-                        listNumQuestionExam as ArrayList<Int>
+                        listNumQuestionExam as ArrayList<Int>,listAvailableExams as ArrayList<String>
                     )
                 }
             }
