@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">TuristicAppAmov</string>
+    <string name="app_name">CertificationsApp</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_teste">TesteActivity</string>
     <string name="title_activity_results">ResultsActivity</string>
+    <string name="certificationsapp">CertificationsApp</string>
 </resources>
